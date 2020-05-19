@@ -145,5 +145,4 @@ async def on_message(message):
 
 
     
-os.environ['NzA0NjE5MDI1MjU4NTEyNDQ0.Xqj2Lw.m8BfAv8ZQlMDDcxnnDb4Grnbxsc']
 client.run(os.environ['TOKEN'])
