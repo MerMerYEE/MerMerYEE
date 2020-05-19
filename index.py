@@ -130,7 +130,7 @@ async def on_message(message):
 
 
     if message.content.startswith("데쿠야 롤"):
-        lol = message.content[6:].replace(" ", "+").replace("+",  "%2B")
+        lol = message.content[6:].replace("+",  "%2B").replace(" ", "+")
         await message.channel.send("https://www.op.gg/summoner/userName="+lol)
 
 
