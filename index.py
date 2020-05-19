@@ -3,6 +3,7 @@ import asyncio
 import tasks
 import requests
 from bs4 import BeautifulSoup
+import os
 
 
 client = discord.AutoShardedClient()
@@ -144,5 +145,5 @@ async def on_message(message):
 
 
     
-
-client.run("")
+os.environ['NzA0NjE5MDI1MjU4NTEyNDQ0.Xqj2Lw.m8BfAv8ZQlMDDcxnnDb4Grnbxsc']
+client.run(os.environ['TOKEN'])
