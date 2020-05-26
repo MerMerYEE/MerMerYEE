@@ -104,7 +104,8 @@ async def on_message(message):
 
 
     if message.content == "데쿠야 트위치":
-        await message.channel.send("트위치는 머머리이지! https://m.twitch.tv/MerMerYEE")
+        twitch = message.content[8:].replace("+",  "%2B").replace(" ", "+")
+        await message.channel.send("https://m.twitch.tv/"+twitch)
 
 
     if message.content.startswith("데쿠야 입력"):
