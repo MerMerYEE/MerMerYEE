@@ -83,7 +83,7 @@ async def on_message(message):
         await message.channel.send(rv[::-1])
 
     if message.content.startswith("데쿠야 메이플"):
-        Name = message.content[8:len(message.content)]
+        Name = message.content[8:].replace("+",  "%2B").replace(" ", "+")
 
         await message.channel.send("https://maple.gg/u/"+Name)
 
@@ -104,7 +104,7 @@ async def on_message(message):
 
 
     if message.content == "데쿠야 트위치":
-        await message.channel.send("트위치는 뭘뭘이이지! https://m.twitch.tv/MerMerYEE")
+        await message.channel.send("트위치는 머머리이지! https://m.twitch.tv/MerMerYEE")
 
 
     if message.content.startswith("데쿠야 입력"):
