@@ -3,7 +3,6 @@ from discord.ext import commands
 import asyncio
 import random
 import os
-import pymysql
 
 client = commands.AutoShardedBot(command_prefix = '데쿠야 ')
 client.remove_command('help')
@@ -22,14 +21,6 @@ async def on_ready():
        messages.append(messages.pop(0))
        await asyncio.sleep(3)
 
-@client.enent
-async def on_member_join(member):
-    role = "킹반인"
-    for i in member.server.roles:
-        if i.name == "킹반인"
-            role = i
-            break
-    await client.add_roles(member, role)
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
