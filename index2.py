@@ -297,6 +297,4 @@ async def 사랑해(ctx):
 
 
 
-
-
 client.run("NzA0NjE5MDI1MjU4NTEyNDQ0.XsMwFw.YPfHVhGa2kDfNgUrOfuuYFgeviM")
