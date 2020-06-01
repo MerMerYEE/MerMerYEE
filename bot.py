@@ -151,10 +151,6 @@ async def 제작(ctx):
     await ctx.send(embed=embed)
 
 @client.command()
-async def 메이플(ctx, Name):
-    await ctx.send("https://maple.gg/u/"+Name)
-
-@client.command()
 async def invite(ctx):
     await ctx.send("https://bit.ly/2Z8fA2C 여기있어")
 
