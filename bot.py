@@ -249,7 +249,7 @@ async def 주사위(ctx):
     await msg.edit(content="구")
     await msg.edit(content="두")
     await msg.edit(content="구")
-    await msg.edit(content=number + "이 나왔습니다!")
+    await msg.edit(content=number)
     
     
 
