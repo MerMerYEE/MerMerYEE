@@ -225,7 +225,11 @@ async def 메이플(ctx, maple):
 
 @client.command()
 async def 트위치(ctx, twitch):
-    await ctx.send("https://maple.gg/u/"+twitch)
+    await ctx.send("https://m.twitch.tv/"+twitch)
+
+@client.command()
+async def 트위치(ctx, twitch2):
+    await ctx.send("https://m.twitch.tv/"+twitch2)
 
 @client.command()
 async def maple(ctx, maple2):
