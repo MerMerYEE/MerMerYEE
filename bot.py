@@ -234,6 +234,14 @@ async def twitch(ctx, twitch2):
 @client.command()
 async def maple(ctx, maple2):
     await ctx.send("https://maple.gg/u/"+maple2)
+   
+@client.command()
+async def 오버워치(ctx, over):
+    await ctx.send("https://overwatch.op.gg/search?playerName=" + over)
+
+@client.command()
+async def overwatch(ctx, over2):
+    await ctx.send("https://overwatch.op.gg/search?playerName=" + over2)
 
 @client.command()
 async def 거꾸로(ctx, rv):
@@ -254,8 +262,6 @@ async def 주사위(ctx):
     await msg.edit(content="두")
     await msg.edit(content="구")
     await msg.edit(content=number)
-    
-    
 
 @client.command()
 async def 주인(ctx):
