@@ -193,7 +193,7 @@ async def 명령어(ctx):
     embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
     embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
     embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로')
-    embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기)')
+    embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기), twitch(찾기), 오버워치(전적), overwatch(전적)')
     embed.add_field(name = '띵크', value = '클래식, 빵, 버거, 박수, 가지, 피젯, 물고기, 하드, 인터넷, 레몬, 비정상')
     await ctx.send(embed=embed)
 
@@ -204,7 +204,7 @@ async def help(ctx):
     embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
     embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
     embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로')
-    embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기)')
+    embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기), twitch(찾기), 오버워치(전적), overwatch(전적)')
     embed.add_field(name = '띵크', value = '클래식, 빵, 버거, 박수, 가지, 피젯, 물고기, 하드, 인터넷, 레몬, 비정상')
     await ctx.send(embed=embed)
 
@@ -215,7 +215,7 @@ async def 도움말(ctx):
     embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
     embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
     embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로')
-    embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기)')
+    embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기), twitch(찾기), 오버워치(전적), overwatch(전적)')
     embed.add_field(name = '띵크', value = '클래식, 빵, 버거, 박수, 가지, 피젯, 물고기, 하드, 인터넷, 레몬, 비정상')
     await ctx.send(embed=embed)
 
@@ -228,7 +228,7 @@ async def 트위치(ctx, twitch):
     await ctx.send("https://m.twitch.tv/"+twitch)
 
 @client.command()
-async def 트위치(ctx, twitch2):
+async def twitch(ctx, twitch2):
     await ctx.send("https://m.twitch.tv/"+twitch2)
 
 @client.command()
