@@ -189,10 +189,10 @@ async def 봇정보(ctx):
 @client.command()
 async def 명령어(ctx):
     embed=discord.Embed(color=0xff00, title="명령어")
-    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar_url)
+    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar)
     embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
     embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
-    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로')
+    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로(수정중)')
     embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기), twitch(찾기), 오버워치(전적), overwatch(전적)')
     embed.add_field(name = '띵크', value = '클래식, 빵, 버거, 박수, 가지, 피젯, 물고기, 하드, 인터넷, 레몬, 비정상')
     await ctx.send(embed=embed)
@@ -200,10 +200,10 @@ async def 명령어(ctx):
 @client.command()
 async def help(ctx):
     embed=discord.Embed(color=0xff00, title="명령어")
-    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar_url)
+    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar)
     embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
     embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
-    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로')
+    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로(수정중)')
     embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기), twitch(찾기), 오버워치(전적), overwatch(전적)')
     embed.add_field(name = '띵크', value = '클래식, 빵, 버거, 박수, 가지, 피젯, 물고기, 하드, 인터넷, 레몬, 비정상')
     await ctx.send(embed=embed)
@@ -211,12 +211,23 @@ async def help(ctx):
 @client.command()
 async def 도움말(ctx):
     embed=discord.Embed(color=0xff00, title="명령어")
-    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar_url)
+    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar)
     embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
     embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
-    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로')
+    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로(수정중)')
     embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기), twitch(찾기), 오버워치(전적), overwatch(전적)')
-    embed.add_field(name = '띵크', value = '클래식, 빵, 버거, 박수, 가지, 피젯, 물고기, 하드, 인터넷, 레몬, 비정상')
+    embed.add_field(name = '띵크', value = '띵크')
+    await ctx.send(embed=embed)
+    
+@client.command()
+async def cmds(ctx):
+    embed=discord.Embed(color=0xff00, title="명령어")
+    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar)
+    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
+    embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
+    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로(수정중)')
+    embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기), twitch(찾기), 오버워치(전적), overwatch(전적)')
+    embed.add_field(name = '띵크', value = '띵크')
     await ctx.send(embed=embed)
 
 @client.command()
@@ -244,7 +255,7 @@ async def overwatch(ctx, over2):
     await ctx.send("https://overwatch.op.gg/search?playerName=" + over2)
 
 @client.command()
-async def 거꾸로(ctx, rv):
+async def 거꾸로(ctx):
     rv = ' '.join(ctx.split(' ')[2:])
     if rv == "enoyreve@":
         return
