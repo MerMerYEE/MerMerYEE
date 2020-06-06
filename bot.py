@@ -8,14 +8,6 @@ from bs4 import BeautifulSoup
 import pymysql
 import json
 
-config = 'counters_list.json'
-'''
-conn = pymysql.connect(host='localhost', user='root'', password='hj20080802!',
-                        db='Noticedb', charset='utf8')
-
-curs = conn.cursor(pymysql.cursors.DictCursor)
-'''
-
 client = commands.AutoShardedBot(command_prefix = "데쿠야 ")
 client.remove_command('help')
 
