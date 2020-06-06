@@ -3,8 +3,20 @@ from discord.ext import commands
 import asyncio
 import random
 import os
+import requests
+from bs4 import BeautifulSoup
+import pymysql
+import json
 
-client = commands.AutoShardedBot(command_prefix = '데쿠야 ')
+config = 'counters_list.json'
+'''
+conn = pymysql.connect(host='localhost', user='root'', password='hj20080802!',
+                        db='Noticedb', charset='utf8')
+
+curs = conn.cursor(pymysql.cursors.DictCursor)
+'''
+
+client = commands.AutoShardedBot(command_prefix = "데쿠야 ")
 client.remove_command('help')
 
 
@@ -24,10 +36,11 @@ async def on_ready():
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
-        embed = discord.Embed(color=0xff00, title="__**오류!**__", description = "`Invalid command used`")
+        embed = discord.Embed(color=0xff00, title="__**오류!**__", description = "`알 수 없는 명령어야!`")
         await ctx.send(embed=embed)
 
 @client.command(pass_context = True)
+@commands.has_permissions(administrator=True)
 async def clear(ctx, number):
        mgs = [] #Empty list to put all the messages in the log
        number = int(number) #Converting the amount of messages to delete to an integer
@@ -39,18 +52,46 @@ async def clear(ctx, number):
 async def 채널저장(ctx, channel: discord.TextChannel):
     await ctx.send(channel.id)
 
+@client.command(name="추방", pass_context=True)
+@commands.has_permissions(administrator=True)
+async def _kick(ctx, *, user_name: discord.Member, reason=None):
+    await user_name.kick(reason=reason)
+    await ctx.send(str(user_name)+"을(를) 킥했어!")
+
+@client.command(name="밴", pass_context=True)
+@commands.has_any_role("Commander")
+async def _ban(ctx, *, user_name: discord.Member):
+    await user_name.ban()
+    await ctx.send(str(user_name)+"을(를) 영원히 보냈어!")
+
+@_ban.error
+async def _ban_error(ctx, error):
+    if isinstance(error, commands.MissingAnyRole):
+        await ctx.send("{} 너 Commander이라는 역할이 필요해!".format(ctx.message.author))
+
+@client.command(name="언밴", pass_context=True)
+@commands.has_permissions(administrator=True)
+async def _unban(ctx, *, user_name):
+    banned_users = await ctx.guild.bans()
+    member_name, member_discriminator = user_name.split('#')
+    for ban_entry in banned_users:
+        user = ban_entry.user
+        if (user.name, user.discriminator) == (member_name, member_discriminator):
+            await ctx.guild.unban(user)
+            await ctx.send(f"{user.mention}이(가) 갑자기 움직여!! 나 무서워 ㅠㅠ")
+            return
+
+@_kick.error
+async def _kick_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("{} 너 권한이 없는데?.".format(ctx.message.author))
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
+    if isinstance(error, commands.BadArgument):
+        await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
 
 @client.command()
-async def kick(ctx, member : discord.Member, *, reason=None):
-    await member.kick(reason=reason)
-    await ctx.send(f'Kicked {member.mention}')
-
-@client.command()
-async def ban(ctx, member : discord.Member, *, reason=None):
-    await member.ban(reason=reason)
-    await ctx.send(f' banned {member.mention}')
-
-@client.command()
+@commands.has_permissions(administrator=True)
 async def mute(ctx, member : discord.Member):
     guild = ctx.guild
 
@@ -68,13 +109,6 @@ async def mute(ctx, member : discord.Member):
 
             await member.add_roles(newRole)
             await ctx.send("{} 얘를 {} 얘가 뮤트 시켰어" .format(member.mention, ctx.author.mention))
-
-@client.command()
-@commands.has_permissions(ban_members = True)
-@commands.bot_has_permissions(ban_members = True)
-async def unban(ctx, member):
-    await ctx.guild.unban(member)
-    await ctx.send(f' 언벤 {user.mention}')
 
 @client.command(aliases=["echo"])
 async def say(ctx, *, words):
@@ -167,14 +201,6 @@ async def 띵크(ctx):
     await ctx.send("띵킹띵킹")
 
 @client.command()
-async def lol(ctx, lol):
-    await ctx.send("https://www.op.gg/summoner/userName="+lol)
-
-@client.command()
-async def 롤(ctx, lol2):
-    await ctx.send("https://www.op.gg/summoner/userName="+lol2)
-
-@client.command()
 async def 핑(ctx):
     await ctx.send(f"{int(client.latency *1000)}ms이야!")
 
@@ -187,75 +213,53 @@ async def 봇정보(ctx):
     await ctx.send(f"{int(client.latency *1000)}ms이야!")
 
 @client.command()
-async def 명령어(ctx):
-    embed=discord.Embed(color=0xff00, title="명령어")
-    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar)
-    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
-    embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
-    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로(수정중)')
-    embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기), twitch(찾기), 오버워치(전적), overwatch(전적)')
-    embed.add_field(name = '띵크', value = '클래식, 빵, 버거, 박수, 가지, 피젯, 물고기, 하드, 인터넷, 레몬, 비정상')
-    await ctx.send(embed=embed)
-
-@client.command()
 async def help(ctx):
     embed=discord.Embed(color=0xff00, title="명령어")
-    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar)
+    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar_url)
     embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
     embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
-    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로(수정중)')
-    embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기), twitch(찾기), 오버워치(전적), overwatch(전적)')
-    embed.add_field(name = '띵크', value = '클래식, 빵, 버거, 박수, 가지, 피젯, 물고기, 하드, 인터넷, 레몬, 비정상')
+    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, command, 타이머, 제작, 거꾸로, 사랑해')
+    embed.add_field(name = '링크 명령어', value = '메이플(전적), maple, 롤(전적), lol(전적), 트위치(찾기), 오버워치(전적), overwatch(전적)')
+    embed.add_field(name = '띵크', value = "띵크")
     await ctx.send(embed=embed)
 
 @client.command()
 async def 도움말(ctx):
     embed=discord.Embed(color=0xff00, title="명령어")
-    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar)
+    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar_url)
     embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
     embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
-    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로(수정중)')
-    embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기), twitch(찾기), 오버워치(전적), overwatch(전적)')
-    embed.add_field(name = '띵크', value = '띵크')
+    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, command, 타이머, 제작, 거꾸로, 사랑해')
+    embed.add_field(name = '링크 명령어', value = '메이플(전적), maple, 롤(전적), lol(전적), 트위치(찾기), 오버워치(전적), overwatch(전적)')
+    embed.add_field(name = '띵크', value = "띵크")
     await ctx.send(embed=embed)
-    
+
 @client.command()
-async def cmds(ctx):
+async def 명령어(ctx):
     embed=discord.Embed(color=0xff00, title="명령어")
-    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar)
+    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar_url)
     embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
     embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
-    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 타이머, 제작, 거꾸로(수정중)')
-    embed.add_field(name = '링크 명령어', value = '메이플(전적), 롤(전적), lol(전적), 트위치(찾기), twitch(찾기), 오버워치(전적), overwatch(전적)')
-    embed.add_field(name = '띵크', value = '띵크')
+    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, command, 타이머, 제작, 거꾸로, 사랑해')
+    embed.add_field(name = '링크 명령어', value = '메이플(전적), maple, 롤(전적), lol(전적), 트위치(찾기), 오버워치(전적), overwatch(전적)')
+    embed.add_field(name = '띵크', value = "띵크")
     await ctx.send(embed=embed)
 
 @client.command()
-async def 메이플(ctx, maple):
-    await ctx.send("https://maple.gg/u/"+maple)
+async def command(ctx):
+    embed=discord.Embed(color=0xff00, title="명령어")
+    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar_url)
+    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
+    embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
+    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, command, 타이머, 제작, 거꾸로, 사랑해')
+    embed.add_field(name = '링크 명령어', value = '메이플(전적), maple, 롤(전적), lol(전적), 트위치(찾기), 오버워치(전적), overwatch(전적)')
+    embed.add_field(name = '띵크', value = "띵크")
+    await ctx.send(embed=embed)
+
+
 
 @client.command()
-async def 트위치(ctx, twitch):
-    await ctx.send("https://m.twitch.tv/"+twitch)
-
-@client.command()
-async def twitch(ctx, twitch2):
-    await ctx.send("https://m.twitch.tv/"+twitch2)
-
-@client.command()
-async def maple(ctx, maple2):
-    await ctx.send("https://maple.gg/u/"+maple2)
-   
-@client.command()
-async def 오버워치(ctx, over):
-    await ctx.send("https://overwatch.op.gg/search?playerName=" + over)
-
-@client.command()
-async def overwatch(ctx, over2):
-    await ctx.send("https://overwatch.op.gg/search?playerName=" + over2)
-
-@client.command()
-async def 거꾸로(ctx):
+async def 거꾸로(ctx, rv):
     rv = ' '.join(ctx.split(' ')[2:])
     if rv == "enoyreve@":
         return
@@ -273,6 +277,8 @@ async def 주사위(ctx):
     await msg.edit(content="두")
     await msg.edit(content="구")
     await msg.edit(content=number)
+    
+    
 
 @client.command()
 async def 주인(ctx):
@@ -286,25 +292,72 @@ async def 주인(ctx):
 async def 사랑해(ctx):
     await ctx.send("저두용~ :heart:")
 
+@client.command()
+async def 오버워치(ctx, over):
+    await ctx.send("https://overwatch.op.gg/search?playerName=" + over)
 
-    
+@client.command()
+async def overwatch(ctx, over2):
+    await ctx.send("https://overwatch.op.gg/search?playerName=" + over2)
+
+@client.command()
+async def 트위치(ctx, twitch):
+    await ctx.send("https://m.twitch.tv/"+twitch)
+
+@client.command()
+async def twitch(ctx, twitch2):
+    await ctx.send("https://m.twitch.tv/"+twitch2)
+
+@client.command()
+async def 메이플(ctx, maple1):
+    await ctx.send("https://maple.gg/u/"+maple1)
+
+@client.command()
+async def maple(ctx, maple2):
+    await ctx.send("https://maple.gg/u/"+maple2)
+
+@client.command()
+async def lol(ctx, lol):
+    await ctx.send("https://www.op.gg/summoner/userName="+lol)
+
+@client.command()
+async def 롤(ctx, lol2):
+    await ctx.send("https://www.op.gg/summoner/userName="+lol2)
+
+@client.command()
+async def 롤테스트(ctx, Name):
+    req = requests.get("https://www.op.gg/summoner/userName="+Name)
+    html = req.text
+    soup = BeautifulSoup(html, 'html.parser')
+
+    #랭크
+    Rank1 = soup.find_all("span", {'class': 'tierRank'})
+    Rank2 = str(Rank1[0])[str(Rank1[0]).find('nk">') + 4:str(Rank1[0]).find("</span>")]
+
+    #점수
+    LP1 = soup.find_all("span", {"class": "LeaguePoints"})
+    LP2 = str(LP1[0])[str(LP1[0]).find('">')+2 :str(LP1[0]).find("</sp")]
+    LP3 = LP2.strip()
+
+    #승 패 승률 부분
+    win1 = soup.find_all("span", {"class": "win"})
+    win2 = str(win1[0])[str(win1[0]).find('ns">') + 4:str(win1[0]).find("</sp")]
+
+    lose1 = soup.find_all("span", {"class": "lose"})
+    lose2 = str(lose1[0])[str(lose1[0]).find('es">') + 4:str(lose1[0]).find("</sp")]
+
+    ratio1 = soup.find_all("span", {"class": "total"})
+    ratio2 = str(ratio1[0])[str(ratio1[0]).find('io">') + 4:str(ratio1[0]).find("</sp")]
+
+    win3 = win2.replace('W', '승')
+    lose3 = lose2.replace('L', '패')
+    ratio3 = ratio2.replace('Win Ratio', '승률')
+
+    lool = '티어: ' + Rank2 +' / 점수: ' + LP3 +' / '+ratio3+' / '+win3+' / '+lose3
+    await ctx.send(lool)
 
 
 
 
 
-
-        
-
-    
-
-    
-
-
-    
-
-
-
-
-
-client.run(os.environ['token'])
+client.run("NzA0NjE5MDI1MjU4NTEyNDQ0.XtuNXA.FcM8r1ScfP9wJHMRavVX-k10qyc")
