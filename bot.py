@@ -5,8 +5,6 @@ import random
 import os
 import requests
 from bs4 import BeautifulSoup
-import pymysql
-import json
 
 client = commands.AutoShardedBot(command_prefix = "데쿠야 ")
 client.remove_command('help')
