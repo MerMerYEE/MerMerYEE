@@ -456,5 +456,4 @@ async def 롤테스트(ctx, Name):
 
 
 
-client.run("NzA0NjE5MDI1MjU4NTEyNDQ0.Xtuahg.nhMVCZNJkZRd6fyRhD3hxgg85x0")
 client.run(os.environ['TOKEN'])
