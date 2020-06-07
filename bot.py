@@ -31,12 +31,10 @@ async def on_command_error(ctx, error):
 
 @client.command(pass_context = True)
 @commands.has_permissions(administrator=True)
-async def clear(ctx, number):
-       mgs = [] #Empty list to put all the messages in the log
-       number = int(number) #Converting the amount of messages to delete to an integer
-       async for x in client.logs_from(ctx.message.channel, limit = number):
-           mgs.append(x)
-       await client.delete_messages(mgs)
+async def 삭제(ctx, amount : int):
+    await ctx.send("메세지 삭제중~")
+    await asyncio.sleep(1)
+    await ctx.channel.purge(limit=amount + 2)
 
 @client.command()
 async def 채널저장(ctx, channel: discord.TextChannel):
