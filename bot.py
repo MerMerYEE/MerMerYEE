@@ -365,23 +365,6 @@ async def 롤테스트(ctx, Name):
     lool = '티어: ' + Rank2 +' / 점수: ' + LP3 +' / '+ratio3+' / '+win3+' / '+lose3
     await ctx.send(lool)
 
-qr = qrcode.QRCode(
-    version=1,
-    error_correction=qrcode.constants.ERROR_CORRECT_L,
-    box_size=10,
-    border=4,
-)
-
-@client.command()
-async def 생성(ctx, qrr):
-    qr.add_data(qrr)
-    qr.make(fit=True)
-
-    img = qr.make_image()
-    img.save("파일명.png")
-    qr.clear()
-
-
 
 
 
