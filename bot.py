@@ -5,8 +5,6 @@ import random
 import os
 import requests
 from bs4 import BeautifulSoup
-import pymysql
-import json
 import qrcode
 from discord.utils import get
 from Dtime import Uptime
