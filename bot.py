@@ -5,10 +5,29 @@ import random
 import os
 import requests
 from bs4 import BeautifulSoup
+import pymysql
+import json
+import qrcode
+from discord.utils import get
+from Dtime import Uptime
+import time
+
+
+'''
+conn = pymysql.connect(host='localhost', user='root'', password='hj20080802!',
+                        db='Noticedb', charset='utf8')
+
+curs = conn.cursor(pymysql.cursors.DictCursor)
+'''
 
 client = commands.AutoShardedBot(command_prefix = "데쿠야 ")
+Uptime.uptimeset()
 client.remove_command('help')
-
+'''
+for filename in os.listdir("Cogs"): #2
+    if filename.endswith(".py"): #3
+        client.load_extension(f"Cogs.{filename[:-3]}") #4
+'''
 @client.event
 async def on_ready():
     print("다음으로 로그인합니다")
@@ -22,13 +41,27 @@ async def on_ready():
        messages.append(messages.pop(0))
        await asyncio.sleep(3)
 
-@client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
-        embed = discord.Embed(color=0xff00, title="__**오류!**__", description = "`알 수 없는 명령어야!`")
-        await ctx.send(embed=embed)
+user = 444363545635848193
 
+@client.command()
+async def 시간(ctx):
+    now = time.localtime()
+    await ctx.send("%04d년 %02d월 %02d일 %02d시 %02d분 %02d초네??" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec))
 
+@client.command()
+async def 길드(ctx):
+    if ctx.author.id == user:
+        await ctx.send(client.guilds)
+    else:
+        return
+
+@client.command()
+async def 업타임(ctx):
+    uptime = str(Uptime.uptime()).split(":")
+    hours = uptime[0]
+    minitues = uptime[1]
+    seconds = uptime[2].split(".")[0]
+    await ctx.send(f"{hours}시간 {minitues}분 {seconds}초 동안 살아있었어!!")
 
 @client.command(pass_context = True)
 @commands.has_permissions(administrator=True)
@@ -45,18 +78,31 @@ async def 채널저장(ctx, channel: discord.TextChannel):
 @commands.has_permissions(administrator=True)
 async def _kick(ctx, *, user_name: discord.Member, reason=None):
     await user_name.kick(reason=reason)
-    await ctx.send(str(user_name)+"을(를) 킥했어!")
+    await ctx.send(str(user_name)+"님을 킥했어요!!")
+
+@_kick.error
+async def _kick_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("{} 권한이 없는데요??".format(ctx.message.author))
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
+    if isinstance(error, commands.BadArgument):
+        await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
 
 @client.command(name="밴", pass_context=True)
-@commands.has_any_role("Commander")
+@commands.has_permissions(administrator=True)
 async def _ban(ctx, *, user_name: discord.Member):
     await user_name.ban()
-    await ctx.send(str(user_name)+"을(를) 영원히 보냈어!")
+    await ctx.send(str(user_name)+"님을 영원히 보냈어요!!")
 
 @_ban.error
 async def _ban_error(ctx, error):
-    if isinstance(error, commands.MissingAnyRole):
-        await ctx.send("{} 너 Commander이라는 역할이 필요해!".format(ctx.message.author))
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("{} 너 권한이 없는데?.".format(ctx.message.author))
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
+    if isinstance(error, commands.BadArgument):
+        await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
 
 @client.command(name="언밴", pass_context=True)
 @commands.has_permissions(administrator=True)
@@ -67,57 +113,50 @@ async def _unban(ctx, *, user_name):
         user = ban_entry.user
         if (user.name, user.discriminator) == (member_name, member_discriminator):
             await ctx.guild.unban(user)
-            await ctx.send(f"{user.mention}이(가) 갑자기 움직여!! 나 무서워 ㅠㅠ")
+            await ctx.send(f"{user.mention} 그...그가 돌아왔어!!")
             return
 
-@_kick.error
-async def _kick_error(ctx, error):
+@_unban.error
+async def _unban_error(ctx, error):
     if isinstance(error, commands.MissingPermissions):
-        await ctx.send("{} 너 권한이 없는데?.".format(ctx.message.author))
+        await ctx.send("{} 권한이 없는데요???".format(ctx.message.author))
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
     if isinstance(error, commands.BadArgument):
         await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
-'''
+
 @client.command(name="뮤트", pass_context=True)
 @commands.has_permissions(administrator=True)
-@commands.has_any_role("뮤트")
-async def _mute(ctx, member : discord.Member):
-    guild = ctx.guild
-
-    for role in guild.roles:
-        if role.name == "뮤트":
-            await member.add_roles(role)
-            await ctx.send("{} 얘를 {} 얘가 뮤트 시켰어" .format(member.mention, ctx.author.mention))
-            return
-
-            overwrite = discord.permissionsOverwrite(send_messages=False)
-            newRole = await guild.create_role(name="뮤트")
-
-            for channel in guild.text_channels:
-                await channel.set_permissions(newRole, overwrite=overwrite)
-
-            await member.add_roles(newRole)
-            await ctx.send("{} 얘를 {} 얘가 뮤트 시켰어" .format(member.mention, ctx.author.mention))
-'''
-@client.command(name="뮤트", pass_context=True)
-@commands.has_permissions(administrator=True)
-@commands.has_any_role("뮤트")
-async def _Hmute(ctx, member: discord.Member=None):
+async def _mute(ctx, member: discord.Member=None):
     member = member or ctx.message.author
     await member.add_roles(get(ctx.guild.roles, name="뮤트"))
-    await ctx.channel.send(str(member)+"에게 역할이 적용되었습니다.")
+    await ctx.channel.send(str(member)+"님이 뮤트가 되었어요!!!")
 
-@_Hmute.error
-async def _Hmute_error(ctx, error):
+@_mute.error
+async def _mute_error(ctx, error):
     if isinstance(error, commands.MissingPermissions):
-        await ctx.send("{} 너 권한이 없는데?.".format(ctx.message.author))
+        await ctx.send("{} 권한이 없는데요??".format(ctx.message.author))
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
     if isinstance(error, commands.BadArgument):
         await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
     if isinstance(error, commands.MissingAnyRole):
-        await ctx.send("{} 뮤트라는 역할이 존재하지 않는데??".format(ctx.message.author))
+        await ctx.send("{} 뮤트라는 역할이 존재하지 않는데요??".format(ctx.message.author))
+
+@client.command(name="언뮤트", pass_context=True)
+async def _unmute(ctx, member: discord.Member=None):
+    member = member or ctx.message.author
+    await member.remove_roles(get(ctx.guild.roles, name='Muted'))
+    await ctx.send(str(member)+"이젠 말 할 수 있을거에요...")
+
+@_unmute.error
+async def _unmute_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("{} 권한이 없는데요??".format(ctx.message.author))
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
+    if isinstance(error, commands.BadArgument):
+        await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
 
 @client.command(aliases=["echo"])
 async def say(ctx, *, words):
@@ -210,71 +249,92 @@ async def 띵크(ctx):
     await ctx.send("띵킹띵킹")
 
 @client.command()
-async def 핑(ctx):
-    await ctx.send(f"{int(client.latency *1000)}ms이야!")
-
-@client.command()
-async def ping(ctx):
-    await ctx.send(f"{int(client.latency *1000)}ms이야!")
-
-@client.command()
 async def 봇정보(ctx):
     await ctx.send(f"{int(client.latency *1000)}ms이야!")
 
 @client.command()
 async def help(ctx):
+    channel = await ctx.author.create_dm()
     embed=discord.Embed(color=0xff00, title="명령어")
-    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar_url)
-    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
-    embed.add_field(name = '관리 명령어', value = '밴, 언밴, 뮤트, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨, 밴 명령어는 Commander이라는 역할을 착용하고 있어야 가능함)')
-    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, command, 타이머, 제작, 거꾸로, 사랑해')
-    embed.add_field(name = '링크 명령어', value = '메이플(전적), maple, 롤(전적), lol(전적), 트위치(찾기), 오버워치(전적), overwatch(전적)')
-    embed.add_field(name = '띵크', value = "띵크")
-    await ctx.send(embed=embed)
-
-@client.command()
-async def 도움말(ctx):
-    embed=discord.Embed(color=0xff00, title="명령어")
-    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar_url)
-    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
-    embed.add_field(name = '관리 명령어', value = '밴, 언밴, 뮤트, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨, 밴 명령어는 Commander이라는 역할을 착용하고 있어야 가능함)'
-    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, command, 타이머, 제작, 거꾸로, 사랑해')
-    embed.add_field(name = '링크 명령어', value = '메이플(전적), maple, 롤(전적), lol(전적), 트위치(찾기), 오버워치(전적), overwatch(전적)')
-    embed.add_field(name = '띵크', value = "띵크")
-    await ctx.send(embed=embed)
-
-@client.command()
-async def 명령어(ctx):
-    embed=discord.Embed(color=0xff00, title="명령어")
-    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar_url)
-    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
-    embed.add_field(name = '관리 명령어', value = '밴, 언밴, 뮤트, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨, 밴 명령어는 Commander이라는 역할을 착용하고 있어야 가능함)'
-    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, command, 타이머, 제작, 거꾸로, 사랑해')
-    embed.add_field(name = '링크 명령어', value = '메이플(전적), maple, 롤(전적), lol(전적), 트위치(찾기), 오버워치(전적), overwatch(전적)')
-    embed.add_field(name = '띵크', value = "띵크")
-    await ctx.send(embed=embed)
-
-@client.command()
-async def command(ctx):
-    embed=discord.Embed(color=0xff00, title="명령어")
-    embed.set_footer(text=client.get_user(444363545635848193).name, icon_url=client.get_user(444363545635848193).avatar_url)
+    embed.set_footer(text=client.get_user(444363545635848193).name + client.get_user(444363545635848193).tag + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
     embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
     embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
     embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, command, 타이머, 제작, 거꾸로, 사랑해')
     embed.add_field(name = '링크 명령어', value = '메이플(전적), maple, 롤(전적), lol(전적), 트위치(찾기), 오버워치(전적), overwatch(전적)')
     embed.add_field(name = '띵크', value = "띵크")
-    await ctx.send(embed=embed)
+    await ctx.send(ctx.author.mention + "dm으로 도움말을 보냈어요!")
+    await channel.send(embed=embed)
 
+@client.command()
+async def 도움말(ctx):
+    channel = await ctx.author.create_dm()
+    embed=discord.Embed(color=0xff00, title="명령어")
+    embed.set_footer(text=client.get_user(444363545635848193).name + client.get_user(444363545635848193).tag + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
+    embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
+    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, command, 타이머, 제작, 거꾸로, 사랑해')
+    embed.add_field(name = '링크 명령어', value = '메이플(전적), maple, 롤(전적), lol(전적), 트위치(찾기), 오버워치(전적), overwatch(전적)')
+    embed.add_field(name = '띵크', value = "띵크")
+    await ctx.send(ctx.author.mention + "dm으로 도움말을 보냈어요!")
+    await channel.send(embed=embed)
 
+@client.command()
+async def 명령어(ctx):
+    channel = await ctx.author.create_dm()
+    embed=discord.Embed(color=0xff00, title="명령어")
+    embed.set_footer(text=client.get_user(444363545635848193).name + client.get_user(444363545635848193).tag + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
+    embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
+    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, command, 타이머, 제작, 거꾸로, 사랑해')
+    embed.add_field(name = '링크 명령어', value = '메이플(전적), maple, 롤(전적), lol(전적), 트위치(찾기), 오버워치(전적), overwatch(전적)')
+    embed.add_field(name = '띵크', value = "띵크")
+    await ctx.send(ctx.author.mention + "dm으로 도움말을 보냈어요!")
+    await channel.send(embed=embed)
+
+@client.command()
+async def commands(ctx):
+    channel = await ctx.author.create_dm()
+    embed=discord.Embed(color=0xff00, title="명령어")
+    embed.set_footer(text=client.get_user(444363545635848193).name + client.get_user(444363545635848193).tag + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
+    embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
+    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, command, 타이머, 제작, 거꾸로, 사랑해')
+    embed.add_field(name = '링크 명령어', value = '메이플(전적), maple, 롤(전적), lol(전적), 트위치(찾기), 오버워치(전적), overwatch(전적)')
+    embed.add_field(name = '띵크', value = "띵크")
+    await ctx.send(ctx.author.mention + "dm으로 도움말을 보냈어요!")
+    await channel.send(embed=embed)
+
+@client.command()
+async def cmds(ctx):
+    channel = await ctx.author.create_dm()
+    embed=discord.Embed(color=0xff00, title="명령어")
+    embed.set_footer(text=client.get_user(444363545635848193).name + client.get_user(444363545635848193).tag + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
+    embed.add_field(name = '관리 명령어', value = 'ban, unban, mute, unmute (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
+    embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, commands, cmds, 타이머, 제작, 거꾸로, 사랑해')
+    embed.add_field(name = '링크 명령어', value = '메이플(전적), maple, 롤(전적), lol(전적), 트위치(찾기), 오버워치(전적), overwatch(전적)')
+    embed.add_field(name = '띵크', value = "띵크")
+    await ctx.send(ctx.author.mention + "dm으로 도움말을 보냈어요!")
+    await channel.send(embed=embed)
 
 @client.command()
 async def 거꾸로(ctx, rv):
-    rv = ' '.join(ctx.split(' ')[2:])
     if rv == "enoyreve@":
         return
     if rv == "ereh@":
         return
-    await ctx.send(rv[::-1])
+    await ctx.send(reversed(rv))
+
+@client.command()
+async def 생성(ctx, qrr):
+    img = qrcode.make(qrr)
+    img.save(qrr+".png")
+
+    qrc = qrr + ".png"
+
+    await ctx.send(file=discord.File(qrc))
+
+
 
 number = random.randint(1, 6)
 @client.command()
@@ -286,6 +346,31 @@ async def 주사위(ctx):
     await msg.edit(content="두")
     await msg.edit(content="구")
     await msg.edit(content=number)
+
+@client.command()
+async def eval(ctx, evall):
+    embed=discord.Embed(color=0xff00, title="eval 결과", description = "결과 =" + eval(evall))
+    await ctx.send(embed=embed)
+
+@client.command()
+async def eval2(ctx, eeval):
+    if ctx.author.id == user:
+        embed=discord.Embed(title="Eval 결과", description=f"""input :inbox_tray:
+            
+        {ctx.message.content[8:]}
+            
+
+        output :outbox_tray:
+            
+        {eval(ctx.message.content[8:])}
+            
+
+        """)
+        await ctx.send(embed=embed)
+    else:
+        embed=discord.Embed(title="오류!", description="봇 제작자가 아닙니다!")
+        await ctx.send(embed=embed)
+
     
     
 
@@ -369,4 +454,7 @@ async def 롤테스트(ctx, Name):
 
 
 
+
+
+client.run("NzA0NjE5MDI1MjU4NTEyNDQ0.Xtuahg.nhMVCZNJkZRd6fyRhD3hxgg85x0")
 client.run(os.environ['TOKEN'])
