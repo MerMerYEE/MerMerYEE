@@ -9,7 +9,6 @@ from bs4 import BeautifulSoup
 client = commands.AutoShardedBot(command_prefix = "데쿠야 ")
 client.remove_command('help')
 
-
 @client.event
 async def on_ready():
     print("다음으로 로그인합니다")
@@ -28,6 +27,8 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         embed = discord.Embed(color=0xff00, title="__**오류!**__", description = "`알 수 없는 명령어야!`")
         await ctx.send(embed=embed)
+
+
 
 @client.command(pass_context = True)
 @commands.has_permissions(administrator=True)
@@ -77,10 +78,11 @@ async def _kick_error(ctx, error):
         await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
     if isinstance(error, commands.BadArgument):
         await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
-
-@client.command()
+'''
+@client.command(name="뮤트", pass_context=True)
 @commands.has_permissions(administrator=True)
-async def mute(ctx, member : discord.Member):
+@commands.has_any_role("뮤트")
+async def _mute(ctx, member : discord.Member):
     guild = ctx.guild
 
     for role in guild.roles:
@@ -97,6 +99,25 @@ async def mute(ctx, member : discord.Member):
 
             await member.add_roles(newRole)
             await ctx.send("{} 얘를 {} 얘가 뮤트 시켰어" .format(member.mention, ctx.author.mention))
+'''
+@client.command(name="뮤트", pass_context=True)
+@commands.has_permissions(administrator=True)
+@commands.has_any_role("뮤트")
+async def _Hmute(ctx, member: discord.Member=None):
+    member = member or ctx.message.author
+    await member.add_roles(get(ctx.guild.roles, name="뮤트"))
+    await ctx.channel.send(str(member)+"에게 역할이 적용되었습니다.")
+
+@_Hmute.error
+async def _Hmute_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("{} 너 권한이 없는데?.".format(ctx.message.author))
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
+    if isinstance(error, commands.BadArgument):
+        await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
+    if isinstance(error, commands.MissingAnyRole):
+        await ctx.send("{} 뮤트라는 역할이 존재하지 않는데??".format(ctx.message.author))
 
 @client.command(aliases=["echo"])
 async def say(ctx, *, words):
@@ -343,6 +364,22 @@ async def 롤테스트(ctx, Name):
 
     lool = '티어: ' + Rank2 +' / 점수: ' + LP3 +' / '+ratio3+' / '+win3+' / '+lose3
     await ctx.send(lool)
+
+qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_L,
+    box_size=10,
+    border=4,
+)
+
+@client.command()
+async def 생성(ctx, qrr):
+    qr.add_data(qrr)
+    qr.make(fit=True)
+
+    img = qr.make_image()
+    img.save("파일명.png")
+    qr.clear()
 
 
 
