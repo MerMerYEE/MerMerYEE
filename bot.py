@@ -1,5 +1,3 @@
-
-
 import discord 
 from discord.ext import commands
 import asyncio
@@ -11,6 +9,7 @@ import qrcode
 from discord.utils import get
 from Dtime import Uptime
 import time
+import typing
 
 client = commands.AutoShardedBot(command_prefix = "데쿠야 ")
 Uptime.uptimeset()
@@ -205,7 +204,7 @@ async def 주사위(ctx):
     await msg.edit(content="구")
     await msg.edit(content="두")
     await msg.edit(content="구")
-    await msg.edit(content=number)
+    await msg.edit(content="짜잔! {}이 나왔습니다!".format(number))
 
 @client.command()
 async def eval(ctx, evall):
@@ -238,6 +237,53 @@ async def ping(ctx):
 @client.command()
 async def 핑(ctx):
     await ctx.send(f"{int(client.latency *1000)}ms이야!")
+
+def find(filename, directory):
+    if os.path.exists(directory+filename): # 파일이 존재한다면
+        return True # True 반환
+    else: # 아니면
+        return False # False 반환
+
+def returnAddData(filename, directory, num):
+    try: # 에러 처리
+        f = open(directory+filename, "r") # 읽기 전용으로 파일 열기
+        data = f.read() # 읽고 data에 저장
+        f.close() # 파일 닫기
+        f = open(directory+filename, "w") # 쓰기 전용으로 파일 열기
+        f.write(str(int(data)+int(num))) # 더하기
+        f.close() # 파일 닫기
+    except FileNotFoundError: # 에러가 날 경우 
+        print("Error : File not found") # 출력
+
+@client.command(name="경고", pass_context=True)
+@commands.has_permissions(administrator=True)
+async def _warn(ctx, counts, user_name : typing.Optional[discord.Member]=None, reason="없음"):
+    if user_name == None or user_name == ctx.message.author:
+        await ctx.send("자신에겐 경고를 줄 수 없어요!")
+    else:
+        foundfile = find(str(user_name)+".txt", "warnings/")
+        if foundfile:
+            warnings = returnAddData(str(user_name)+".txt", "warnings/", counts)
+            if warnings >= 10:
+                await user_name.ban()
+                await ctx.send(str(user_name)+"이(가) 경고 때문에 밴 되었어요 ㅠㅠ")
+            else:
+                await ctx.send(str(user_name)+"에게 경고를 줬어요!!")
+        else:
+            f = open("warnings/"+str(user_name)+".txt", "w+")
+            f.write(str(int(counts)))
+            f.close()
+            await ctx.send(str(user_name)+"에게 경고를 부여했어요!")
+
+@_warn.error
+async def _warn_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("{}님! 권한이 없는데요?!".format(ctx.message.author))
+
+if os.path.exists("warnings"):
+    print("Warnings Dir found, passing")
+else:
+    os.mkdir("warnings")
 
 
 
