@@ -186,8 +186,9 @@ async def 거꾸로(ctx, rv):
 
 @client.command()
 async def 생성(ctx, qrr):
+    qrr = qrr.replace("/", " ")
     img = qrcode.make(qrr)
-    img.save(qrr+".png")
+    img.save(qrr  + ".png")
 
     qrc = qrr + ".png"
 
