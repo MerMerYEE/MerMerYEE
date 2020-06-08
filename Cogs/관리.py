@@ -24,11 +24,11 @@ class 관리(commands.Cog):
     @_kick.error
     async def _kick_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            await ctx.send("{} 권한이 없는데요??".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "권한이 없는데요??")
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "님, 유저를 넣지 않았어요!.")
         if isinstance(error, commands.BadArgument):
-            await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "님, 유저를 넣어 주세요!!")
 
     @commands.command(name="킥", pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -39,11 +39,11 @@ class 관리(commands.Cog):
     @_추방.error
     async def _ban_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            await ctx.send("{} 너 권한이 없는데?.".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "권한이 없는데요??")
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "님, 유저를 넣지 않았어요!!")
         if isinstance(error, commands.BadArgument):
-            await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "님, 유저를 넣어 주세요!!")
 
     @commands.command(name="밴", pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -54,11 +54,11 @@ class 관리(commands.Cog):
     @_ban.error
     async def _ban_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            await ctx.send("{} 너 권한이 없는데?.".format(ctx.message.author))
+            await ctx.send(message.author.mention + "권한이 없는데요??")
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
         if isinstance(error, commands.BadArgument):
-            await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
+            await ctx.send(message.author.mention + "님, 유저를 넣어 주세요!!")
 
     @commands.command(name="언밴", pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -75,11 +75,11 @@ class 관리(commands.Cog):
     @_unban.error
     async def _unban_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            await ctx.send("{} 권한이 없는데요???".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "권한이 없는데요??")
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "님, 유저를 넣지 않았어요!!")
         if isinstance(error, commands.BadArgument):
-            await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "님, 유저를 넣어 주세요!!")
 
     @commands.command(name="뮤트", pass_context=True)
     @commands.has_permissions(administrator=True)
@@ -91,28 +91,28 @@ class 관리(commands.Cog):
     @_mute.error
     async def _mute_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            await ctx.send("{} 권한이 없는데요??".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "권한이 없는데요??")
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "님, 유저를 넣지 않았어요!!")
         if isinstance(error, commands.BadArgument):
-            await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "님, 유저를 넣어 주세요!!")
         if isinstance(error, commands.MissingAnyRole):
-            await ctx.send("{} 뮤트라는 역할이 존재하지 않는데요??".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "뮤트라는 역할이 존재하지 않는데요??")
 
     @commands.command(name="언뮤트", pass_context=True)
     async def _unmute(self, ctx, member: discord.Member=None):
         member = member or ctx.message.author
         await member.remove_roles(get(ctx.guild.roles, name='뮤트'))
-        await ctx.send(str(member)+"이젠 말 할 수 있을거에요...")
+        await ctx.send(str(member)+"이젠 말 할 수 있을거에요!!")
 
     @_unmute.error
     async def _unmute_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            await ctx.send("{} 권한이 없는데요??".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "권한이 없는데요??")
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("{}님, 유저를 넣지 않았어요!.".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "님, 유저를 넣지 않았어요!!")
         if isinstance(error, commands.BadArgument):
-            await ctx.send("{}님, 유저를 넣어 주세요!!".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "님, 유저를 넣어 주세요!!")
 
     @commands.command(name="삭제", pass_context = True)
     @commands.has_permissions(administrator=True)
@@ -129,7 +129,7 @@ class 관리(commands.Cog):
     @_삭제.error
     async def _삭제_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            await ctx.send("{} 권한이 없는데요??".format(ctx.message.author))
+            await ctx.send(ctx.author.mention + "권한이 없는데요??")
 
 
 def setup(client): 
