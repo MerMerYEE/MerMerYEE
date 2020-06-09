@@ -10,6 +10,8 @@ from discord.utils import get
 from Dtime import Uptime
 import time
 import typing
+import youtube_dl
+import re
 
 client = commands.AutoShardedBot(command_prefix = "데쿠야 ")
 Uptime.uptimeset()
@@ -31,20 +33,35 @@ async def on_ready():
        await client.change_presence(status=discord.Status.online, activity=discord.Game(name=messages[0]))
        messages.append(messages.pop(0))
        await asyncio.sleep(3)
+       
 
 @client.command(name="로드")
-async def load_commands(ctx, extension):
+async def load_commands(ctx, extension=None):
     if ctx.author.id == user:
-        client.load_extension(f"Cogs.{extension}")
-        await ctx.send(f":white_check_mark: {extension}을(를) 로드했어요!!")
+        if extension is None: # extension이 None이면 (그냥 !리로드 라고 썼을 때)
+            for filename in os.listdir("Cogs"):
+                if filename.endswith(".py"):
+                    client.unload_extension(f"Cogs.{filename[:-3]}")
+                    client.load_extension(f"Cogs.{filename[:-3]}")
+            await ctx.send(":white_check_mark: 모든 명령어를 로드했어요!!")
+        else:
+            client.load_extension(f"Cogs.{extension}")
+            await ctx.send(f":white_check_mark: {extension}을(를) 로드했어요!!")
     else:
         return
 
 @client.command(name="언로드")
-async def unload_commands(ctx, extension):
+async def unload_commands(ctx, extension=None):
     if ctx.author.id == user:
-        client.unload_extension(f"Cogs.{extension}")
-        await ctx.send(f":white_check_mark: {extension}을(를) 언로드했어요!!")
+        if extension is None: # extension이 None이면 (그냥 !리로드 라고 썼을 때)
+            for filename in os.listdir("Cogs"):
+                if filename.endswith(".py"):
+                    client.unload_extension(f"Cogs.{filename[:-3]}")
+                    client.load_extension(f"Cogs.{filename[:-3]}")
+            await ctx.send(":white_check_mark: 모든 명령어를 언로드했어요!!")
+        else:
+            client.unload_extension(f"Cogs.{extension}")
+            await ctx.send(f":white_check_mark: {extension}을(를) 언로드했어요!!")
     else:
         return
 
@@ -56,18 +73,27 @@ async def reload_commands(ctx, extension=None):
                 if filename.endswith(".py"):
                     client.unload_extension(f"Cogs.{filename[:-3]}")
                     client.load_extension(f"Cogs.{filename[:-3]}")
-                    await ctx.send(":white_check_mark: 모든 명령어를 다시 가져왔어요!!")
+            await ctx.send(":white_check_mark: 모든 명령어를 다시 가져왔어요!!")
         else:
             client.unload_extension(f"Cogs.{extension}")
             client.load_extension(f"Cogs.{extension}")
             await ctx.send(f":white_check_mark: {extension}을(를) 다시 가져왔어요!!")
     else:
         return
-@client.command(name="나가")
-async def _leave(ctx):
-    await client.voice_clients[0].disconnect()
 
+'''
+@reload_commands.error
+async def reload_commands_error(ctx, error):
+    if isinstance(error, no)
+'''
 user = 444363545635848193
+
+@client.command()
+async def 때려(ctx, user_ : discord.Member):
+    if ctx.author.id == user:
+        await ctx.send(str(user_) + " 죽어 퍽퍽")
+    else:
+        await ctx.send("ㅇ?")
 
 @client.command()
 async def 시간(ctx):
@@ -92,20 +118,6 @@ async def 업타임(ctx):
 @client.command()
 async def 채널저장(ctx, channel: discord.TextChannel):
     await ctx.send(channel.id)
-
-@client.command(aliases=["echo"])
-async def say(ctx, *, words):
-    msg = await ctx.send(words)
-    await msg.edit(content=words + "\n" + ctx.author.mention + "님이 시키셨어요!")
-
-@client.command()
-async def 말해(ctx, word):
-    if ctx.author.id == user:
-        msg = await ctx.send(word)
-    else:
-        msg = await ctx.send(word)
-        await asyncio.sleep(0.8)
-        await msg.edit(content=word + "\n" + ctx.author.mention + "님이 시키셨어요!")
 
 @client.command()
 async def 사진(ctx):
@@ -173,10 +185,6 @@ async def 비정상(ctx):
     ctx.send(client.get_emoji(708537623706075286))
 
 @client.command()
-async def 봇정보(ctx):
-    await ctx.send(f"{int(client.latency *1000)}ms이야!")
-
-@client.command()
 async def 거꾸로(ctx, rv):
     if rv == "enoyreve@":
         return
@@ -187,8 +195,8 @@ async def 거꾸로(ctx, rv):
 @client.command()
 async def 생성(ctx, qrr):
     img = qrcode.make(qrr)
-    img.save("asdf" + ".png")
-    qrc = "asdf" + ".png"
+    img.save("asdf.png")
+    qrc = "asdf.png"
 
     await ctx.send(file=discord.File(qrc))
 
@@ -229,13 +237,7 @@ async def eval2(ctx, eeval):
         embed=discord.Embed(title="오류!", description="봇 제작자가 아닙니다!")
         await ctx.send(embed=embed)
 
-@client.command()
-async def ping(ctx):
-    await ctx.send(f"{int(client.latency *1000)}ms이야!")
 
-@client.command()
-async def 핑(ctx):
-    await ctx.send(f"{int(client.latency *1000)}ms이야!")
 
 def find(filename, directory):
     if os.path.exists(directory+filename): # 파일이 존재한다면
@@ -283,6 +285,7 @@ if os.path.exists("warnings"):
     print("Warnings Dir found, passing")
 else:
     os.mkdir("warnings")
+
 
 
 
