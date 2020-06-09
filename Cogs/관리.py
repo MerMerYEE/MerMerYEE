@@ -130,6 +130,23 @@ class 관리(commands.Cog):
     async def _삭제_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
             await ctx.send(ctx.author.mention + "권한이 없는데요??")
+            
+    @commands.command(name="clear", pass_context = True)
+        @commands.has_permissions(administrator=True)
+        async def _clear(self, ctx, amount : int):
+            await asyncio.sleep(0.5)
+            if amount == 0:
+                await ctx.send(ctx.author.mention + "0 이상의 수를 입력해주세요!!")
+                return
+            else:
+                await ctx.send(":white_check_mark: 메세지 삭제 중 이에요!")
+                await asyncio.sleep(0.5)
+                await ctx.channel.purge(limit=amount + 2)
+
+    @_clear.error
+    async def _clear_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send(ctx.author.mention + "권한이 없는데요??")
 
 
 def setup(client): 
