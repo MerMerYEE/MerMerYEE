@@ -13,6 +13,7 @@ import typing
 import youtube_dl
 import re
 
+
 client = commands.AutoShardedBot(command_prefix = "데쿠야 ")
 Uptime.uptimeset()
 client.remove_command('help')
@@ -49,6 +50,14 @@ async def load_commands(ctx, extension=None):
             await ctx.send(f":white_check_mark: {extension}을(를) 로드했어요!!")
     else:
         return
+    
+@client.command(name="슬립")
+async def sleep(ctx):
+    a = 0
+    while True:
+        a = a + 1
+        await asyncio.sleep(100)
+        print(a)
 
 @client.command(name="언로드")
 async def unload_commands(ctx, extension=None):
