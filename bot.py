@@ -13,10 +13,11 @@ import typing
 import youtube_dl
 import re
 
-
 client = commands.AutoShardedBot(command_prefix = "데쿠야 ")
 Uptime.uptimeset()
 client.remove_command('help')
+
+num = random.randint(1, 5)
 
 for filename in os.listdir("Cogs"): #2
     if filename.endswith(".py"): #3
@@ -50,14 +51,6 @@ async def load_commands(ctx, extension=None):
             await ctx.send(f":white_check_mark: {extension}을(를) 로드했어요!!")
     else:
         return
-    
-@client.command(name="슬립")
-async def sleep(ctx):
-    a = 0
-    while True:
-        a = a + 1
-        await asyncio.sleep(100)
-        print(a)
 
 @client.command(name="언로드")
 async def unload_commands(ctx, extension=None):
@@ -101,13 +94,11 @@ user = 444363545635848193
 async def 때려(ctx, user_ : discord.Member):
     if ctx.author.id == user:
         await ctx.send(str(user_) + " 죽어 퍽퍽")
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
     else:
-        await ctx.send("ㅇ?")
-
-@client.command()
-async def 시간(ctx):
-    now = time.localtime()
-    await ctx.send("%04d년 %02d월 %02d일 %02d시 %02d분 %02d초네??" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec))
+        return
 
 @client.command()
 async def 길드(ctx):
@@ -117,16 +108,13 @@ async def 길드(ctx):
         return
 
 @client.command()
-async def 업타임(ctx):
-    uptime = str(Uptime.uptime()).split(":")
-    hours = uptime[0]
-    minitues = uptime[1]
-    seconds = uptime[2].split(".")[0]
-    await ctx.send(f"{hours}시간 {minitues}분 {seconds}초 동안 살아있었어!!")
-    
-@client.command()
 async def 채널저장(ctx, channel: discord.TextChannel):
     await ctx.send(channel.id)
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 사진(ctx):
@@ -134,64 +122,119 @@ async def 사진(ctx):
     file = discord.File("미도리야.jpg")
     embed.set_image(file=file)
     await ctx.send(embed=embed)
-
-@client.command()
-async def 타이머(ctx):
-    timer = int(ctx.message.content.split(' ')[2])
-    msg = await ctx.send("3초후 " + str(timer) + "초 타이머를 시작합니다!")
-    await asyncio.sleep(3)
-    for i in range(timer):
-        await msg.edit(content = str(i))
-        await asyncio.sleep(1)
-    await msg.edit(content = "시간 끝")
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 클래식(ctx):
     await ctx.send(":thinking:")
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 눈(ctx):
     await ctx.send(client.get_emoji(703129203847200829))
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 빵(ctx):
     await ctx.send(client.get_emoji(708537624012390518))
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 버거(ctx):
     await ctx.send(client.get_emoji(708537623836098600))
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 박수(ctx):
     await ctx.send(client.get_emoji(708537624154996808))
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 가지(ctx):
     await ctx.send(client.get_emoji(708537623622451213))
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 피젯(ctx):
     await ctx.send(client.get_emoji(708537623983161435))
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 물고기(ctx):
     await ctx.send(client.get_emoji(708537623446290493))
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 하드(ctx):
     await ctx.send(client.get_emoji(708537623794155560))
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 인터넷(ctx):
     await ctx.send(client.get_emoji(708537623723114517))
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 레몬(ctx):
     await ctx.send(client.get_emoji(708537623425318944))
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 비정상(ctx):
     ctx.send(client.get_emoji(708537623706075286))
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def 거꾸로(ctx, rv):
@@ -208,19 +251,11 @@ async def 생성(ctx, qrr):
     qrc = "asdf.png"
 
     await ctx.send(file=discord.File(qrc))
-
-
-
-number = random.randint(1, 6)
-@client.command()
-async def 주사위(ctx):
-    msg = await ctx.send("3초후 주사위를 돌립니다! (1~6)")
-    await asyncio.sleep(3)
-    await msg.edit(content="두")
-    await msg.edit(content="구")
-    await msg.edit(content="두")
-    await msg.edit(content="구")
-    await msg.edit(content="짜잔! {}이 나왔습니다!".format(number))
+    if num == 1:
+        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+        await ctx.send(embed=embed)
+    else:
+        return
 
 @client.command()
 async def eval(ctx, evall):
