@@ -4,9 +4,12 @@ import asyncio
 import random
 import os
 import requests
+import youtube_dl
 from bs4 import BeautifulSoup
 import qrcode
 from discord.utils import get
+import urllib
+
 
 user = 444363545635848193
 
@@ -32,6 +35,19 @@ class chat(commands.Cog):
         await ctx.send("?")
 
     @commands.command()
+    async def 제작(self, ctx):
+        embed=discord.Embed(color=0xff00, title="제작자:오타쿠#5251", description="도움주신분:한곰#6567\nLLOOOOTT#0817(이 사람은 계속 바뀜)\n승현#1702")
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def invite(self, ctx):
+        await ctx.send("https://bit.ly/2Z8fA2C 여기있어")
+
+    @commands.command()
+    async def 초대(self, ctx):
+        await ctx.send("https://bit.ly/2Z8fA2C 여기있어")
+
+    @commands.command()
     async def 띵킹(self, ctx):
         await ctx.send(":think:")
 
@@ -41,7 +57,7 @@ class chat(commands.Cog):
     
     @commands.command()
     async def 제작(self, ctx):
-       embed=discord.Embed(color=0xff00, title="제작자:오타쿠#5251", description="도움주신분:한곰#6567\nLLOOOOTT#0817\n승현#1702")
+        embed=discord.Embed(color=0xff00, title="제작자:오타쿠#5251", description="도움주신분:한곰#6567\nLLOOOOTT#0817\n승현#1702")
         embed.add_field(name = "제작 시작일", value = "5월 1일")
         await ctx.send(embed=embed)
 
@@ -51,8 +67,8 @@ class chat(commands.Cog):
 
     @commands.command()
     async def 초대(self, ctx):
-        embed=discord.Embed(color=0xff00, title="여기있어!)
-        embed.add_field(name = "링크", value = "[초대](https://bit.ly/2Z8fA2C"))
+        embed=discord.Embed(color=0xff00, title="여기있어!")
+        embed.add_field(name = "링크", value = "[초대](https://bit.ly/2Z8fA2C)")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -85,6 +101,8 @@ class chat(commands.Cog):
             msg = await ctx.send(word)
             await asyncio.sleep(1)
             await msg.edit(content=word + "\n" + ctx.author.mention + "님이 시키셨어요!")
+    
+
 
     @commands.command()
     async def 말해(self, ctx, *, word):
