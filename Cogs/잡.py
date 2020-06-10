@@ -32,14 +32,6 @@ class chat(commands.Cog):
         await ctx.send("?")
 
     @commands.command()
-    async def invite(self, ctx):
-        await ctx.send("https://bit.ly/2Z8fA2C 여기있어")
-
-    @commands.command()
-    async def 초대(self, ctx):
-        await ctx.send("https://bit.ly/2Z8fA2C 여기있어")
-
-    @commands.command()
     async def 띵킹(self, ctx):
         await ctx.send(":think:")
 
