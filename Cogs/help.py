@@ -10,6 +10,9 @@ from discord.utils import get
 from Dtime import Uptime
 import time
 
+num = random.randint(1, 5)
+
+
 class help(commands.Cog):
 
     def __init__(self, client):
@@ -27,6 +30,11 @@ class help(commands.Cog):
         embed.add_field(name = '띵크', value = "띵크")
         await ctx.send(ctx.author.mention + "님 DM으로 도움말을 보냈어요!")
         await channel.send(embed=embed)
+        if num == 1:
+            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+            await ctx.send(embed=embed)
+        else:
+            return
 
     @commands.command()
     async def help(self, ctx):
@@ -40,6 +48,11 @@ class help(commands.Cog):
         embed.add_field(name = '띵크', value = "띵크")
         await ctx.send(ctx.author.mention + "님 DM으로 도움말을 보냈어요!")
         await channel.send(embed=embed)
+        if num == 1:
+            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+            await ctx.send(embed=embed)
+        else:
+            return
 
     @commands.command()
     async def 명령어(self, ctx):
@@ -53,6 +66,11 @@ class help(commands.Cog):
         embed.add_field(name = '띵크', value = "띵크")
         await ctx.send(ctx.author.mention + "님 DM으로 도움말을 보냈어요!")
         await channel.send(embed=embed)
+        if num == 1:
+            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+            await ctx.send(embed=embed)
+        else:
+            return
 
     @commands.command()
     async def cmds(self, ctx):
@@ -66,6 +84,11 @@ class help(commands.Cog):
         embed.add_field(name = '띵크', value = "띵크")
         await ctx.send(ctx.author.mention + "님 DM으로 도움말을 보냈어요!")
         await channel.send(embed=embed)
+        if num == 1:
+            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
+            await ctx.send(embed=embed)
+        else:
+            return
 
 
 def setup(client): 
