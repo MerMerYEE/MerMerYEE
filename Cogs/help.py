@@ -19,7 +19,7 @@ class help(commands.Cog):
     async def 도움말(self, ctx):
         channel = await ctx.author.create_dm()
         embed=discord.Embed(color=0xff00, title="명령어")
-        embed.set_footer(text=self.client.get_user(444363545635848193).name + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
+        embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
         embed.add_field(name = '관리 명령어', value = '밴, 언밴, 뮤트, 언뮤트, 킥, 추방, 삭제, clear (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
         embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, 타이머, 제작, 거꾸로, 사랑해')
@@ -32,7 +32,7 @@ class help(commands.Cog):
     async def help(self, ctx):
         channel = await ctx.author.create_dm()
         embed=discord.Embed(color=0xff00, title="명령어")
-        embed.set_footer(text=self.client.get_user(444363545635848193).name + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
+        embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
         embed.add_field(name = '관리 명령어', value = '밴, 언밴, 뮤트, 언뮤트, 킥, 추방, 삭제, clear (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
         embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, 타이머, 제작, 거꾸로, 사랑해')
@@ -45,7 +45,7 @@ class help(commands.Cog):
     async def 명령어(self, ctx):
         channel = await ctx.author.create_dm()
         embed=discord.Embed(color=0xff00, title="명령어")
-        embed.set_footer(text=self.client.get_user(444363545635848193).name + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
+        embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
         embed.add_field(name = '관리 명령어', value = '밴, 언밴, 뮤트, 언뮤트, 킥, 추방, 삭제, clear (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
         embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, 타이머, 제작, 거꾸로, 사랑해')
@@ -58,7 +58,7 @@ class help(commands.Cog):
     async def cmds(self, ctx):
         channel = await ctx.author.create_dm()
         embed=discord.Embed(color=0xff00, title="명령어")
-        embed.set_footer(text=self.client.get_user(444363545635848193).name + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
+        embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444.png?size=1024")
         embed.add_field(name = '관리 명령어', value = '밴, 언밴, 뮤트, 언뮤트, 킥, 추방, 삭제, clear (뮤트기능은 뮤트 라는 역할이 있어야 실행됨)')
         embed.add_field(name = '잡 명령어', value = '핑(ping), 주인, help, 명령어, 도움말, 타이머, 제작, 거꾸로, 사랑해')
@@ -66,7 +66,6 @@ class help(commands.Cog):
         embed.add_field(name = '띵크', value = "띵크")
         await ctx.send(ctx.author.mention + "님 DM으로 도움말을 보냈어요!")
         await channel.send(embed=embed)
-
 
 
 def setup(client): 
