@@ -15,7 +15,7 @@ import re
 import koreanbots
 
 client = commands.AutoShardedBot(command_prefix = "데쿠야 ")
-Bot = koreanbots.Client(client, 'KoreanBots 토큰')
+Bot = koreanbots.Client(client, 'https://koreanbots.dev/manage/704619025258512444')
 Uptime.uptimeset()
 client.remove_command('help')
 
