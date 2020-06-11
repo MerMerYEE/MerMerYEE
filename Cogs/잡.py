@@ -40,17 +40,7 @@ class chat(commands.Cog):
     @commands.command()
     async def 죽어(self, ctx):
         await ctx.send("?")
-
-    @commands.command()
-    async def 제작(self, ctx):
-        embed=discord.Embed(color=0xff00, title="제작자:오타쿠#5251", description="도움주신분:한곰#6567\nLLOOOOTT#0817(이 사람은 계속 바뀜)\n승현#1702")
-        await ctx.send(embed=embed)
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
-
+        
     @commands.command()
     async def 띵킹(self, ctx):
         await ctx.send(":think:")
@@ -82,7 +72,7 @@ class chat(commands.Cog):
 
     @commands.command()
     async def invite(self, ctx):
-        embed=discord.Embed(color=0xff00, description="[초대](https://bit.ly/2Z8fA2C)")
+        embed=discord.Embed(color=0xff00, description="[데쿠봇을 초대해주세요!](https://bit.ly/2Z8fA2C)")
         await ctx.send(embed=embed)
         if num == 1:
             embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
@@ -92,7 +82,7 @@ class chat(commands.Cog):
 
     @commands.command()
     async def 초대(self, ctx):
-        embed=discord.Embed(color=0xff00, description="[초대](https://bit.ly/2Z8fA2C)")
+        embed=discord.Embed(color=0xff00, description="[데쿠봇을 초대해주세요!](https://bit.ly/2Z8fA2C)")
         await ctx.send(embed=embed)
         if num == 1:
             embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
