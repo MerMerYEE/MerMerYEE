@@ -15,6 +15,7 @@ import re
 import koreanbots
 
 client = commands.AutoShardedBot(command_prefix = "데쿠야 ")
+Bot = koreanbots.Client(client, 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcwNDYxOTAyNTI1ODUxMjQ0NCIsImlhdCI6MTU5MTc3MTQzNCwiZXhwIjoxNjIzMzI5MDM0fQ.HQ_On7xLr_e6TiIfYV5IiDNChdJvXB_5qvJ9vkp4avUK_IQOYe286stOb-3cWDfF_UKOgc3bAXZkPEr6SO9jxHOrn2hRtJS7ECs_DYyMOP0m0cbfHTsSnYEIa4F-2MqApH3shymo609fU8VhCXmuy38cyIQ7VHPhbB_gVp6it8w')
 Uptime.uptimeset()
 client.remove_command('help')
 
@@ -36,7 +37,6 @@ async def on_ready():
        await client.change_presence(status=discord.Status.online, activity=discord.Game(name=messages[0]))
        messages.append(messages.pop(0))
        await asyncio.sleep(3)
-    Data = await Bot.getBot('704619025258512444')
        
 
 @client.command(name="로드")
@@ -84,7 +84,7 @@ async def reload_commands(ctx, extension=None):
             await ctx.send(f":white_check_mark: {extension}을(를) 다시 가져왔어요!!")
     else:
         return
-
+        
 '''
 @reload_commands.error
 async def reload_commands_error(ctx, error):
@@ -112,18 +112,6 @@ async def 길드(ctx):
 @client.command()
 async def 채널저장(ctx, channel: discord.TextChannel):
     await ctx.send(channel.id)
-    if num == 1:
-        embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-        await ctx.send(embed=embed)
-    else:
-        return
-
-@client.command()
-async def 사진(ctx):
-    embed = discord.Embed()
-    file = discord.File("미도리야.jpg")
-    embed.set_image(file=file)
-    await ctx.send(embed=embed)
     if num == 1:
         embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
         await ctx.send(embed=embed)
@@ -262,6 +250,7 @@ async def 생성(ctx, qrr):
 @client.command()
 async def eval(ctx, evall):
     embed=discord.Embed(color=0xff00, title="eval 결과", description = "결과 =" + eval(evall))
+    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444/6b4cf3a72bb22ad2726a46f6a508c5ad.webp?size=1024")
     await ctx.send(embed=embed)
 
 @client.command()
@@ -281,6 +270,7 @@ async def eval2(ctx, eeval):
         await ctx.send(embed=embed)
     else:
         embed=discord.Embed(title="오류!", description="봇 제작자가 아닙니다!")
+        embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444/6b4cf3a72bb22ad2726a46f6a508c5ad.webp?size=1024")
         await ctx.send(embed=embed)
 
 
