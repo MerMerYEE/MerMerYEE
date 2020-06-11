@@ -39,25 +39,7 @@ class chat(commands.Cog):
 
     @commands.command()
     async def 죽어(self, ctx):
-        await ctx.send("?")
-        
-    @commands.command()
-    async def 띵킹(self, ctx):
-        await ctx.send(":think:")
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
-
-    @commands.command()
-    async def 띵크(self, ctx):
-        await ctx.send(":think:")
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
+        await ctx.send(message.author.mention + "?")
     
     @commands.command()
     async def 제작(self, ctx):
