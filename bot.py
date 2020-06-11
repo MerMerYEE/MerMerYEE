@@ -12,8 +12,10 @@ import time
 import typing
 import youtube_dl
 import re
+import koreanbots
 
 client = commands.AutoShardedBot(command_prefix = "데쿠야 ")
+Bot = koreanbots.Client(client, 'KoreanBots 토큰')
 Uptime.uptimeset()
 client.remove_command('help')
 
