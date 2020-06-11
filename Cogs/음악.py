@@ -149,7 +149,7 @@ class MusicPlayer:
         return self.bot.loop.create_task(self._cog.cleanup(guild))
 
 
-class ko_Music(commands.Cog):
+class Music(commands.Cog):
 
     __slots__ = ('bot', 'players')
 
@@ -221,7 +221,7 @@ class ko_Music(commands.Cog):
 
         await ctx.trigger_typing()
         embed = discord.Embed(title="Music", description= f'채널에 점속했어요!: **{channel}**', color=0x8680df)
-        embed.set_footer(text=str(client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+        embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
         await ctx.send(embed=embed)
 
     @commands.command(name='play', aliases=['sing', 'p', 'ㅔ'])
@@ -249,7 +249,7 @@ class ko_Music(commands.Cog):
         if not vc or not vc.is_playing():
             await ctx.trigger_typing()
             embed = discord.Embed(title="Music", description= '저는 지금 아무 트랙도 플레이하고 있지 않아요!', color=0x8680df)
-            embed.set_footer(text=str(client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
         elif vc.is_paused():
             return
@@ -265,7 +265,7 @@ class ko_Music(commands.Cog):
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
             embed = discord.Embed(title="MUSIC", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
-            embed.set_footer(text=str(client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
         elif not vc.is_paused():
             return
@@ -282,7 +282,7 @@ class ko_Music(commands.Cog):
             await ctx.trigger_typing()
             await ctx.trigger_typing()
             embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
-            embed.set_footer(text=str(client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
 
         if vc.is_paused():
@@ -302,14 +302,14 @@ class ko_Music(commands.Cog):
             await ctx.trigger_typing()
             await ctx.trigger_typing()
             embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
-            embed.set_footer(text=str(client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
 
         player = self.get_player(ctx)
         if player.queue.empty():
             await ctx.trigger_typing()
             embed = discord.Embed(title="Music", description= '더 이상 대기중인 곡이 없어요!', color=0x8680df)
-            embed.set_footer(text=str(client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
 
         # Grab up to 5 entries from the queue...
@@ -328,14 +328,14 @@ class ko_Music(commands.Cog):
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
             embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
-            embed.set_footer(text=str(client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
 
         player = self.get_player(ctx)
         if not player.current:
             await ctx.trigger_typing()
             embed = discord.Embed(title="Music", description= '저는 지금 아무 트랙도 플레이하고 있지 않아요!', color=0x8680df)
-            embed.set_footer(text=str(client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
 
         try:
@@ -355,18 +355,18 @@ class ko_Music(commands.Cog):
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
             embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
-            embed.set_footer(text=str(client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
 
-        if not 0 < vol < 501:
-            return await ctx.send('볼륨은 1부터 500까지만 가능해요!')
+        if not 0 < vol < 101:
+            return await ctx.send('볼륨은 1부터 100까지만 가능해요!')
 
         player = self.get_player(ctx)
 
         if vc.source:
-            vc.source.volume = vol / 500
+            vc.source.volume = vol / 100
 
-        player.volume = vol / 500
+        player.volume = vol / 100
         await ctx.send(f'**`{ctx.author}`**: 볼륨을 설정했어! **{vol}%**')
 
     @commands.command(name='stop')
@@ -379,11 +379,6 @@ class ko_Music(commands.Cog):
 
         await self.cleanup(ctx.guild)
 
-    @play_.error
-    async def play_error(self, ctx, error):
-        if isinstance(error, InvalidVoiceChannel):
-            await ctx.send("음성 채널에 접속해 있어야 해!")
-
 
 def setup(bot):
-    bot.add_cog(ko_Music(bot))
+    bot.add_cog(Music(bot))
