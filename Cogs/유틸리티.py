@@ -69,7 +69,7 @@ class util(commands.Cog):
     @commands.command()
     async def 시간(self, ctx):
         now = time.localtime()
-        await ctx.send("%04d년 %02d월 %02d일 %02d시 %02d분 %02d초네??" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour + 1, now.tm_min, now.tm_sec))
+        await ctx.send("%04d년 %02d월 %02d일 %02d시 %02d분 %02d초네??" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour + 6 now.tm_min, now.tm_sec))
         if num == 1:
             embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
             await ctx.send(embed=embed)
