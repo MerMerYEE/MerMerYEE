@@ -37,6 +37,7 @@ async def on_ready():
        await client.change_presence(status=discord.Status.online, activity=discord.Game(name=messages[0]))
        messages.append(messages.pop(0))
        await asyncio.sleep(3)
+    Data = await Bot.getBot('704619025258512444')
        
 
 @client.command(name="로드")
