@@ -176,12 +176,12 @@ class Music(commands.Cog):
     async def __error(self, ctx, error):
         if isinstance(error, commands.NoPrivateMessage):
             try:
-                return await ctx.send('This command can not be used in Private Messages.')
+                return await ctx.send('이 명령어는 DM에서 할 수 없어!')
             except discord.HTTPException:
                 pass
         elif isinstance(error, InvalidVoiceChannel):
-            await ctx.send('Error connecting to Voice Channel. '
-                           'Please make sure you are in a valid channel or provide me with one')
+            await ctx.send('음성 채널 연결 오류!! '
+                           '유효하지 않는 채널 같아!')
 
         print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
@@ -345,7 +345,7 @@ class Music(commands.Cog):
             pass
 
         player.np = await ctx.send(f'**현재 이 노래를 틀고 있어요!:** `{vc.source.title}` '
-                                   f'requested by `{vc.source.requester}`')
+                                   f'이 사람이 시켰어!: `{vc.source.requester}`')
 
     @commands.command(name='volume', aliases=['vol'])
     async def change_volume(self, ctx, *, vol: float):
