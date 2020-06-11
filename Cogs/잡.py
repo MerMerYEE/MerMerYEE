@@ -82,7 +82,7 @@ class chat(commands.Cog):
 
     @commands.command()
     async def invite(self, ctx):
-        embed=discord.Embed(color=0xff00, title="[초대](https://bit.ly/2Z8fA2C)")
+        embed=discord.Embed(color=0xff00, description="[초대](https://bit.ly/2Z8fA2C)")
         await ctx.send(embed=embed)
         if num == 1:
             embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
@@ -92,7 +92,7 @@ class chat(commands.Cog):
 
     @commands.command()
     async def 초대(self, ctx):
-        embed=discord.Embed(color=0xff00, title="[초대](https://bit.ly/2Z8fA2C)")
+        embed=discord.Embed(color=0xff00, description="[초대](https://bit.ly/2Z8fA2C)")
         await ctx.send(embed=embed)
         if num == 1:
             embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
