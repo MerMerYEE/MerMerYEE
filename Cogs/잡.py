@@ -52,24 +52,6 @@ class chat(commands.Cog):
             return
 
     @commands.command()
-    async def invite(self, ctx):
-        await ctx.send("http://koreanbots.dev/bots/704619025258512444 여기있어")
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
-
-    @commands.command()
-    async def 초대(self, ctx):
-        await ctx.send("http://koreanbots.dev/bots/704619025258512444 여기있어")
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
-
-    @commands.command()
     async def 띵킹(self, ctx):
         await ctx.send(":think:")
         if num == 1:
