@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
 
-while True:
-    num = random.randint(1, 5)
+
 
 class help(commands.Cog):
 
