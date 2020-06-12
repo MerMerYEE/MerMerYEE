@@ -18,7 +18,7 @@ class chat(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-
+    
     @commands.command()
     async def 사랑해(self, ctx):
         await ctx.send("저두용~ :heart:")
@@ -26,7 +26,7 @@ class chat(commands.Cog):
         
     @commands.command()
     async def guild(self, ctx):
-        await ctx.send(str(self.client.guilds) + "개의 서버" + str(self.client.users) + "명의 유저가 사용하고 있어!")
+        await ctx.send([f'{len(client.guilds)}개의 서버 | {len(client.users)}명의 유저가 이용하고 있어!')
     
     @commands.command()
     async def 주인(self, ctx):
