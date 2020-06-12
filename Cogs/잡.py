@@ -24,11 +24,6 @@ class chat(commands.Cog):
         await ctx.send("저두용~ :heart:")
         
         
-    @commands.command()
-    async def guild(self, ctx):
-        msg = [f'{len(self.client.guilds)}개의 서버 | {len(self.client.users)}명의 유저']
-        await ctx.send(msg.replace("'", ""))
-
 
     
     @commands.command()
