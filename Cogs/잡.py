@@ -26,7 +26,7 @@ class chat(commands.Cog):
         
     @commands.command()
     async def guild(self, ctx):
-        await ctx.send([f'{len(client.guilds)}개의 서버 | {len(client.users)}명의 유저', (f"{int(client.latency *1000)}ms")])
+        await ctx.send([f'{len(self.client.guilds)}개의 서버 | {len(self.client.users)}명의 유저', (f"{int(self.client.latency *1000)}ms")])
 
     
     @commands.command()
