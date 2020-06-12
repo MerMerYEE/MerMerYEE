@@ -22,6 +22,11 @@ class chat(commands.Cog):
     @commands.command()
     async def 사랑해(self, ctx):
         await ctx.send("저두용~ :heart:")
+        
+        
+    @commands.command()
+    async def 길드(self, ctx):
+        await ctx.send((client.guilds) + "개의 서버" + (client.users) + "명의 유저가 사용하고 있어!")
     
     @commands.command()
     async def 주인(self, ctx):
