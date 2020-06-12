@@ -32,6 +32,11 @@ async def on_ready():
        await client.change_presence(status=discord.Status.online, activity=discord.Game(name=messages[0]))
        messages.append(messages.pop(0))
        await asyncio.sleep(3)
+    
+for filename in os.listdir("Cogs"): #2
+    if filename.endswith(".py"): #3
+        app.load_extension(f"Cogs.{filename[:-3]}") #4
+
        
 
 @client.command(name="로드")
