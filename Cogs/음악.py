@@ -76,6 +76,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         return cls(discord.FFmpegPCMAudio(source), data=data, requester=ctx.author)
 
     @classmethod
+                       
     async def regather_stream(cls, data, *, loop):
         loop = loop or asyncio.get_event_loop()
         requester = data['requester']
@@ -220,7 +221,7 @@ class Music(commands.Cog):
                 raise VoiceConnectionError(f'채널에 접속했어요!: <{channel}> 타임 아웃!')
 
         await ctx.trigger_typing()
-        embed = discord.Embed(title="Music", description= f'채널에 점속했어요!: **{channel}**', color=0x8680df)
+        embed = discord.Embed(title="Music", description= f'채널에 점속했어요!: **{channel}**', color=0xff00)
         embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
         await ctx.send(embed=embed)
 
@@ -248,7 +249,7 @@ class Music(commands.Cog):
 
         if not vc or not vc.is_playing():
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '저는 지금 아무 트랙도 플레이하고 있지 않아요!', color=0x8680df)
+            embed = discord.Embed(title="Music", description= '저는 지금 아무 트랙도 플레이하고 있지 않아요!', color=0xff00)
             embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
         elif vc.is_paused():
@@ -264,7 +265,7 @@ class Music(commands.Cog):
 
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
-            embed = discord.Embed(title="MUSIC", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
+            embed = discord.Embed(title="MUSIC", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0xff00)
             embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
         elif not vc.is_paused():
@@ -281,7 +282,7 @@ class Music(commands.Cog):
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
+            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0xff00)
             embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
 
@@ -301,14 +302,14 @@ class Music(commands.Cog):
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
+            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0xff00)
             embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
 
         player = self.get_player(ctx)
         if player.queue.empty():
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '더 이상 대기중인 곡이 없어요!', color=0x8680df)
+            embed = discord.Embed(title="Music", description= '더 이상 대기중인 곡이 없어요!', color=0xff00)
             embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
 
@@ -327,14 +328,14 @@ class Music(commands.Cog):
 
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
+            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0xff00)
             embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
 
         player = self.get_player(ctx)
         if not player.current:
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '저는 지금 아무 트랙도 플레이하고 있지 않아요!', color=0x8680df)
+            embed = discord.Embed(title="Music", description= '저는 지금 아무 트랙도 플레이하고 있지 않아요!', color=0xff00)
             embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
 
@@ -354,7 +355,7 @@ class Music(commands.Cog):
 
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
+            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0xff00)
             embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
             await ctx.send(embed=embed)
 
