@@ -35,7 +35,7 @@ async def on_ready():
     
 for filename in os.listdir("Cogs"): #2
     if filename.endswith(".py"): #3
-        app.load_extension(f"Cogs.{filename[:-3]}") #4
+        client.load_extension(f"Cogs.{filename[:-3]}") #4
 
        
 
