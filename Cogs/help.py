@@ -9,7 +9,7 @@ class help(commands.Cog):
         self.client = client
 
     @commands.command()
-    async def help(self, ctx)
+    async def help(self, ctx):
         msg = await ctx.author.create_dm()
         embed = discord.Embed(title="*명령어!*", color=0xff00)
         embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
@@ -24,7 +24,7 @@ class help(commands.Cog):
         await msg.send(embed=embed)
 
     @commands.command()
-    async def 도움말(self, ctx)
+    async def 도움말(self, ctx):
         msg = await ctx.author.create_dm()
         embed = discord.Embed(title="*도움말!*", color=0xff00)
         embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
@@ -39,7 +39,7 @@ class help(commands.Cog):
         await msg.send(embed=embed)
 
     @commands.command()
-    async def 도움(self, ctx)
+    async def 도움(self, ctx):
         msg = await ctx.author.create_dm()
         embed = discord.Embed(title="*도움말!*", color=0xff00)
         embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
@@ -54,7 +54,7 @@ class help(commands.Cog):
         await ctx.send(ctx.author.mention + "DM으로 도움말을 보냈어요!")
         await msg.send(embed=embed)
 
-    @commands.command()
+    @commands.command():
     async def cmds(self, ctx)
         msg = await ctx.author.create_dm()
         embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
