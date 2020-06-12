@@ -42,11 +42,11 @@ class util(commands.Cog):
     @commands.command()
     async def 홀짝(self, ctx, 홀짝):
         a = random.randint(1, 2)
-        if 홀수 == str(a):
+        if 홀짝 == str(a):
             await ctx.send("정답입니다!")
         else:
             await ctx.send("땡 틀렸습니다 ㅠㅠ")
-        if 홀수 == "홀" or "짝":
+        if 홀짝 == "홀" or "짝":
             await ctx.send("현재 미완입니다")
 
 
