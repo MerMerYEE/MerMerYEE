@@ -26,7 +26,7 @@ class chat(commands.Cog):
         
     @commands.command()
     async def guild(self, ctx):
-        await ctx.send([f'{len(client.guilds)}개의 서버 | {len(client.users)}명의 유저가 이용하고 있어!')
+        await ctx.send([f'{len(client.guilds)}개의 서버 | {len(client.users)}명의 유저가 이용하고 있어!]')
     
     @commands.command()
     async def 주인(self, ctx):
