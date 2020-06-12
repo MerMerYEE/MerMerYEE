@@ -30,11 +30,6 @@ class util(commands.Cog):
             await msg.edit(content = str(i))
             await asyncio.sleep(1)
         await msg.edit(content = "시간 끝")
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
 
     @commands.command()
     async def 업타임(self, ctx):
@@ -43,11 +38,6 @@ class util(commands.Cog):
         minitues = uptime[1]
         seconds = uptime[2].split(".")[0]
         await ctx.send(f"{hours}시간 {minitues}분 {seconds}초 동안 살아있었어!!")
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
 
     @commands.command()
     async def 홀짝(self, ctx, 홀짝):
