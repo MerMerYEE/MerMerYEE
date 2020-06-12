@@ -13,7 +13,6 @@ import urllib
 
 user = 444363545635848193
 
-num = random.randint(1, 5)
 
 class chat(commands.Cog): 
 
@@ -23,11 +22,6 @@ class chat(commands.Cog):
     @commands.command()
     async def 사랑해(self, ctx):
         await ctx.send("저두용~ :heart:")
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
     
     @commands.command()
     async def 주인(self, ctx):
@@ -47,73 +41,38 @@ class chat(commands.Cog):
         embed.add_field(name = "제작 시작일", value = "5월 1일")
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444/6b4cf3a72bb22ad2726a46f6a508c5ad.webp?size=1024")
         await ctx.send(embed=embed)
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
 
     @commands.command()
     async def invite(self, ctx):
         embed=discord.Embed(color=0xff00, title="[초대](https://bit.ly/2Z8fA2C)")
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444/6b4cf3a72bb22ad2726a46f6a508c5ad.webp?size=1024")
         await ctx.send(embed=embed)
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
 
     @commands.command()
     async def 초대(self, ctx):
         embed=discord.Embed(color=0xff00, title="[초대](https://bit.ly/2Z8fA2C)")
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/704619025258512444/6b4cf3a72bb22ad2726a46f6a508c5ad.webp?size=1024")
         await ctx.send(embed=embed)
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
 
     @commands.command()
     async def 띵킹(self, ctx):
         await ctx.send(":thinking:")
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
 
     @commands.command()
     async def 띵크(self, ctx):
         await ctx.send(":thinking:")
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
 
     @commands.command()
     async def 관짝(self, ctx):
         number = random.randint(1, 3)
         pic = str(number) + ".gif"
         await ctx.send(file=discord.File(pic))
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
-
+        
     @commands.command()
     async def 관짝춤(self, ctx):
         number = random.randint(1, 3)
         pic = str(number) + ".gif"
         await ctx.send(file=discord.File(pic))
-        if num == 1:
-            embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-            await ctx.send(embed=embed)
-        else:
-            return
 
     @commands.command()
     async def say(self, ctx, *, word):
@@ -130,11 +89,6 @@ class chat(commands.Cog):
             msg = await ctx.send(word)
             await asyncio.sleep(1)
             await msg.edit(content=word + "\n" + ctx.author.mention + "님이 시키셨어요!")
-            if num == 1:
-                embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-                await ctx.send(embed=embed)
-            else:
-                return
     
 
 
@@ -153,12 +107,6 @@ class chat(commands.Cog):
             msg = await ctx.send(word)
             await asyncio.sleep(1)
             await msg.edit(content=word + "\n" + ctx.author.mention + "님이 시키셨어요!")
-            if num == 1:
-                embed=discord.Embed(color=0xff00, description = "[미도리야가 마음에 드신다면 :heart:를 눌러주세요!](http://koreanbots.dev/bots/704619025258512444)")
-                await ctx.send(embed=embed)
-            else:
-                return
-
         
     
 
