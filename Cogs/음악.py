@@ -91,7 +91,7 @@ class MusicPlayer:
     __slots__ = ('client', '_guild', '_channel', '_cog', 'queue', 'next', 'current', 'np', 'volume')
 
     def __init__(self, ctx):
-        self.client = ctx.client
+        self.client = client
         self._guild = ctx.guild
         self._channel = ctx.channel
         self._cog = ctx.cog
@@ -103,7 +103,7 @@ class MusicPlayer:
         self.volume = .5
         self.current = None
 
-        ctx.client.loop.create_task(self.player_loop())
+        client.loop.create_task(self.player_loop())
 
     async def player_loop(self):
         await self.client.wait_until_ready()
