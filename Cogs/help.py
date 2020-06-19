@@ -20,7 +20,7 @@ class help(commands.Cog):
         embed.add_field(name="관리", value="밴, 언밴, 킥, 추방, 뮤트(뮤트라는 역할이 있어야 해요!), 언뮤트(뮤트라는 역할이 있어야 해요!)")
         embed.add_field(name="띵킹", value="띵킹눈, 띵킹빵, 띵킹버거, 띵킹박수, 띵킹가지, 띵킹피젯, 띵킹물고기, 띵킹하드, 띵킹인터넷, 띵킹레몬, 띵킹비정상")
         embed.add_field(name="음악", value="play(p, ㅔ), connect(join)<--비상용, pause(일시중지), skip(s, ㄴ), queue(q, playlist),  now_playing(np, current, playing),volume(vol), stop")
-        await ctx.send(ctx.author.mention, "DM으로 도움말을 보냈어요!")
+        await ctx.send(ctx.author.mention + " DM으로 도움말을 보냈어요!")
         await msg.send(embed=embed)
 
     @commands.command()
@@ -35,7 +35,7 @@ class help(commands.Cog):
         embed.add_field(name="관리", value="밴, 언밴, 킥, 추방, 뮤트(뮤트라는 역할이 있어야 해요!), 언뮤트(뮤트라는 역할이 있어야 해요!)")
         embed.add_field(name="띵킹", value="띵킹눈, 띵킹빵, 띵킹버거, 띵킹박수, 띵킹가지, 띵킹피젯, 띵킹물고기, 띵킹하드, 띵킹인터넷, 띵킹레몬, 띵킹비정상")
         embed.add_field(name="음악", value="play(p, ㅔ), connect(join)<--비상용, pause(일시중지), skip(s, ㄴ), queue(q, playlist),  now_playing(np, current, playing),volume(vol), stop")
-        await ctx.send(ctx.author.mention + "DM으로 도움말을 보냈어요!")
+        await ctx.send(ctx.author.mention + " DM으로 도움말을 보냈어요!")
         await msg.send(embed=embed)
 
     @commands.command()
@@ -50,7 +50,7 @@ class help(commands.Cog):
         embed.add_field(name="관리", value="밴, 언밴, 킥, 추방, 뮤트(뮤트라는 역할이 있어야 해요!), 언뮤트(뮤트라는 역할이 있어야 해요!)")
         embed.add_field(name="띵킹", value="띵킹눈, 띵킹빵, 띵킹버거, 띵킹박수, 띵킹가지, 띵킹피젯, 띵킹물고기, 띵킹하드, 띵킹인터넷, 띵킹레몬, 띵킹비정상")
         embed.add_field(name="음악", value="play(p, ㅔ), connect(join)<--비상용, pause(일시중지), skip(s, ㄴ), queue(q, playlist),  now_playing(np, current, playing),volume(vol), stop")
-        await ctx.send(ctx.author.mention + "DM으로 도움말을 보냈어요!")
+        await ctx.send(ctx.author.mention + " DM으로 도움말을 보냈어요!")
         await msg.send(embed=embed)
 
     @commands.command()
@@ -66,7 +66,7 @@ class help(commands.Cog):
         embed.add_field(name="관리", value="밴, 언밴, 킥, 추방, 뮤트(뮤트라는 역할이 있어야 해요!), 언뮤트(뮤트라는 역할이 있어야 해요!)")
         embed.add_field(name="띵킹", value="눈, 띵킹빵, 띵킹버거, 띵킹박수, 띵킹가지, 띵킹피젯, 띵킹물고기, 띵킹하드, 띵킹인터넷, 띵킹레몬, 띵킹비정상")
         embed.add_field(name="음악", value="play(p, ㅔ), connect(join)<--비상용, pause(일시중지), skip(s, ㄴ), queue(q, playlist),  now_playing(np, current, playing),volume(vol), stop")
-        await ctx.send(ctx.author.mention + "DM으로 도움말을 보냈어요!")
+        await ctx.send(ctx.author.mention + " DM으로 도움말을 보냈어요!")
         await msg.send(embed=embed)
         
         
