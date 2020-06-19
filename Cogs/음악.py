@@ -53,6 +53,9 @@ class YTDLSource(discord.PCMVolumeTransformer):
         # https://github.com/rg3/youtube-dl/blob/master/README.md
 
     def __getitem__(self, item: str):
+        """Allows us to access attributes similar to a dict.
+        This is only useful when you are NOT downloading.
+        """
         return self.__getattribute__(item)
 
     @classmethod
@@ -76,8 +79,9 @@ class YTDLSource(discord.PCMVolumeTransformer):
         return cls(discord.FFmpegPCMAudio(source), data=data, requester=ctx.author)
 
     @classmethod
-                       
     async def regather_stream(cls, data, *, loop):
+        """Used for preparing a stream, instead of downloading.
+        Since Youtube Streaming links expire."""
         loop = loop or asyncio.get_event_loop()
         requester = data['requester']
 
@@ -88,10 +92,16 @@ class YTDLSource(discord.PCMVolumeTransformer):
 
 
 class MusicPlayer:
-    __slots__ = ('client', '_guild', '_channel', '_cog', 'queue', 'next', 'current', 'np', 'volume')
+    """A class which is assigned to each guild using the bot for Music.
+    This class implements a queue and loop, which allows for different guilds to listen to different playlists
+    simultaneously.
+    When the bot disconnects from the Voice it's instance will be destroyed.
+    """
+
+    __slots__ = ('bot', '_guild', '_channel', '_cog', 'queue', 'next', 'current', 'np', 'volume')
 
     def __init__(self, ctx):
-        self.client = ctx.client
+        self.bot = ctx.bot
         self._guild = ctx.guild
         self._channel = ctx.channel
         self._cog = ctx.cog
@@ -103,12 +113,13 @@ class MusicPlayer:
         self.volume = .5
         self.current = None
 
-        self.client.loop.create_task(self.player_loop())
+        ctx.bot.loop.create_task(self.player_loop())
 
     async def player_loop(self):
-        await self.client.wait_until_ready()
+        """Our main player loop."""
+        await self.bot.wait_until_ready()
 
-        while not self.client.is_closed():
+        while not self.bot.is_closed():
             self.next.clear()
 
             try:
@@ -122,7 +133,7 @@ class MusicPlayer:
                 # Source was probably a stream (not downloaded)
                 # So we should regather to prevent stream expiration
                 try:
-                    source = await YTDLSource.regather_stream(source, loop=self.client.loop)
+                    source = await YTDLSource.regather_stream(source, loop=self.bot.loop)
                 except Exception as e:
                     await self._channel.send(f'There was an error processing your song.\n'
                                              f'```css\n[{e}]\n```')
@@ -131,7 +142,7 @@ class MusicPlayer:
             source.volume = self.volume
             self.current = source
 
-            self._guild.voice_client.play(source, after=lambda _: self.client.loop.call_soon_threadsafe(self.next.set))
+            self._guild.voice_client.play(source, after=lambda _: self.bot.loop.call_soon_threadsafe(self.next.set))
             self.np = await self._channel.send(f'**Now Playing:** `{source.title}` requested by '
                                                f'`{source.requester}`')
             await self.next.wait()
@@ -147,15 +158,17 @@ class MusicPlayer:
                 pass
 
     def destroy(self, guild):
-        return self.client.loop.create_task(self._cog.cleanup(guild))
+        """Disconnect and cleanup the player."""
+        return self.bot.loop.create_task(self._cog.cleanup(guild))
 
 
-class Music(commands.Cog):
+class ko_Music(commands.Cog):
+    """Music related commands."""
 
-    __slots__ = ('client', 'players')
+    __slots__ = ('bot', 'players')
 
-    def __init__(self, client):
-        self.client = self.client
+    def __init__(self, bot):
+        self.bot = bot
         self.players = {}
 
     async def cleanup(self, guild):
@@ -170,24 +183,27 @@ class Music(commands.Cog):
             pass
 
     async def __local_check(self, ctx):
+        """A local check which clientlies to all commands in this cog."""
         if not ctx.guild:
             raise commands.NoPrivateMessage
         return True
 
     async def __error(self, ctx, error):
+        """A local error handler for all errors arising from commands in this cog."""
         if isinstance(error, commands.NoPrivateMessage):
             try:
-                return await ctx.send('이 명령어는 DM에서 할 수 없어!')
+                return await ctx.send('This command can not be used in Private Messages.')
             except discord.HTTPException:
                 pass
         elif isinstance(error, InvalidVoiceChannel):
-            await ctx.send('음성 채널 연결 오류!! '
-                           '유효하지 않는 채널 같아!')
+            await ctx.send('Error connecting to Voice Channel. '
+                           'Please make sure you are in a valid channel or provide me with one')
 
         print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
     def get_player(self, ctx):
+        """Retrieve the guild player, or generate one."""
         try:
             player = self.players[ctx.guild.id]
         except KeyError:
@@ -198,12 +214,19 @@ class Music(commands.Cog):
 
     @commands.command(name='connect', aliases=['join'])
     async def connect_(self, ctx, *, channel: discord.VoiceChannel=None):
-        
+        """Connect to voice.
+        Parameters
+        ------------
+        channel: discord.VoiceChannel [Optional]
+            The channel to connect to. If a channel is not specified, an attempt to join the voice channel you are in
+            will be made.
+        This command also handles moving the bot to different channels.
+        """
         if not channel:
             try:
                 channel = ctx.author.voice.channel
             except AttributeError:
-                raise InvalidVoiceChannel('알 수 없는 채널이거나 이미 접속해 있는 채널이에요!')
+                raise InvalidVoiceChannel('No channel to join. Please either specify a valid channel or join one.')
 
         vc = ctx.voice_client
 
@@ -213,19 +236,19 @@ class Music(commands.Cog):
             try:
                 await vc.move_to(channel)
             except asyncio.TimeoutError:
-                raise VoiceConnectionError(f'채널을 바꿨어요!: <{channel}> 타임 아웃!')
+                raise VoiceConnectionError(f'Moving to channel: <{channel}> timed out.')
         else:
             try:
                 await channel.connect()
             except asyncio.TimeoutError:
-                raise VoiceConnectionError(f'채널에 접속했어요!: <{channel}> 타임 아웃!')
+                raise VoiceConnectionError(f'Connecting to channel: <{channel}> timed out.')
 
         await ctx.trigger_typing()
-        embed = discord.Embed(title="Music", description= f'채널에 점속했어요!: **{channel}**', color=0xff00)
-        embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
+        embed = discord.Embed(title="Music", description= f'Connected to: **{channel}**', color=0x8680df)
+        embed.set_footer(text="Offered by NACL - Shio", icon_url="https://raw.githubusercontent.com/Shio7/EZ-Bot/master/images/Shio8.png")
         await ctx.send(embed=embed)
 
-    @commands.command(name='play', aliases=['sing', 'p', 'ㅔ'])
+    @commands.command(name='play', aliases=['sing'])
     async def play_(self, ctx, *, search: str):
         await ctx.trigger_typing()
 
@@ -238,52 +261,52 @@ class Music(commands.Cog):
 
         # If download is False, source will be a dict which will be used later to regather the stream.
         # If download is True, source will be a discord.FFmpegPCMAudio with a VolumeTransformer.
-        source = await YTDLSource.create_source(ctx, search, loop=self.client.loop, download=False)
+        source = await YTDLSource.create_source(ctx, search, loop=self.bot.loop, download=False)
 
         await player.queue.put(source)
 
-    @commands.command(name='pause', aliases=['일시중지'])
+    @commands.command(name='pause')
     async def pause_(self, ctx):
-        
+        """Pause the currently playing song."""
         vc = ctx.voice_client
 
         if not vc or not vc.is_playing():
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '저는 지금 아무 트랙도 플레이하고 있지 않아요!', color=0xff00)
-            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
+            embed = discord.Embed(title="Music", description= '저는 지금 아무 트랙도 플레이하고 있지 않아요!', color=0x8680df)
+            embed.set_footer(text="Offered by NACL - Shio", icon_url="https://raw.githubusercontent.com/Shio7/EZ-Bot/master/images/Shio8.png")
             await ctx.send(embed=embed)
         elif vc.is_paused():
             return
 
         vc.pause()
-        await ctx.send(f'**`{ctx.author}`**: 노래를 일시 중지했어!!')
+        await ctx.send(f'**`{ctx.author}`**: Paused the song!')
 
-    @commands.command(name='resume', aliases=["재개"])
+    @commands.command(name='resume')
     async def resume_(self, ctx):
-        
+        """Resume the currently paused song."""
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
-            embed = discord.Embed(title="MUSIC", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0xff00)
-            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=client.get_user(444363545635848193).avatar_url)
+            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
+            embed.set_footer(text="Offered by NACL - Shio", icon_url="https://raw.githubusercontent.com/Shio7/EZ-Bot/master/images/Shio8.png")
             await ctx.send(embed=embed)
         elif not vc.is_paused():
             return
 
         vc.resume()
-        await ctx.send(f'**`{ctx.author}`**: 노래를 다시 시작했어요!!')
+        await ctx.send(f'**`{ctx.author}`**: Resumed the song!')
 
-    @commands.command(name='skip', aliases=['s', 'ㄴ'])
+    @commands.command(name='skip')
     async def skip_(self, ctx):
-        
+        """Skip the song."""
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0xff00)
-            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
+            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
+            embed.set_footer(text="Offered by NACL - Shio", icon_url="https://raw.githubusercontent.com/Shio7/EZ-Bot/master/images/Shio8.png")
             await ctx.send(embed=embed)
 
         if vc.is_paused():
@@ -292,25 +315,25 @@ class Music(commands.Cog):
             return
 
         vc.stop()
-        await ctx.send(f'**`{ctx.author}`**: 노래를 스킵했어!!')
+        await ctx.send(f'**`{ctx.author}`**: Skipped the song!')
 
     @commands.command(name='queue', aliases=['q', 'playlist'])
     async def queue_info(self, ctx):
-        
+        """Retrieve a basic queue of upcoming songs."""
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0xff00)
-            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
+            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
+            embed.set_footer(text="Offered by NACL - Shio", icon_url="https://raw.githubusercontent.com/Shio7/EZ-Bot/master/images/Shio8.png")
             await ctx.send(embed=embed)
 
         player = self.get_player(ctx)
         if player.queue.empty():
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '더 이상 대기중인 곡이 없어요!', color=0xff00)
-            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
+            embed = discord.Embed(title="Music", description= '더 이상 대기중인 곡이 없어요!', color=0x8680df)
+            embed.set_footer(text="Offered by NACL - Shio", icon_url="https://raw.githubusercontent.com/Shio7/EZ-Bot/master/images/Shio8.png")
             await ctx.send(embed=embed)
 
         # Grab up to 5 entries from the queue...
@@ -321,22 +344,22 @@ class Music(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(name='now_playing', aliases=['np', 'current','playing'])
+    @commands.command(name='now_playing', aliases=['np', 'current', 'currentsong', 'playing'])
     async def now_playing_(self, ctx):
-        
+        """Display information about the currently playing song."""
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0xff00)
-            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
+            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
+            embed.set_footer(text="Offered by NACL - Shio", icon_url="https://raw.githubusercontent.com/Shio7/EZ-Bot/master/images/Shio8.png")
             await ctx.send(embed=embed)
 
         player = self.get_player(ctx)
         if not player.current:
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '저는 지금 아무 트랙도 플레이하고 있지 않아요!', color=0xff00)
-            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
+            embed = discord.Embed(title="Music", description= '저는 지금 아무 트랙도 플레이하고 있지 않아요!', color=0x8680df)
+            embed.set_footer(text="Offered by NACL - Shio", icon_url="https://raw.githubusercontent.com/Shio7/EZ-Bot/master/images/Shio8.png")
             await ctx.send(embed=embed)
 
         try:
@@ -345,22 +368,27 @@ class Music(commands.Cog):
         except discord.HTTPException:
             pass
 
-        player.np = await ctx.send(f'**현재 이 노래를 틀고 있어요!:** `{vc.source.title}` '
-                                   f'이 사람이 시켰어!: `{vc.source.requester}`')
+        player.np = await ctx.send(f'**Now Playing:** `{vc.source.title}` '
+                                   f'requested by `{vc.source.requester}`')
 
     @commands.command(name='volume', aliases=['vol'])
     async def change_volume(self, ctx, *, vol: float):
-        
+        """Change the player volume.
+        Parameters
+        ------------
+        volume: float or int [Required]
+            The volume to set the player to in percentage. This must be between 1 and 100.
+        """
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
             await ctx.trigger_typing()
-            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0xff00)
-            embed.set_footer(text=str(self.client.get_user(444363545635848193)) + "가 만들었습니다!", icon_url=self.client.get_user(444363545635848193).avatar_url)
+            embed = discord.Embed(title="Music", description= '저는 지금 음성채널에 들어가 있지 않아요!', color=0x8680df)
+            embed.set_footer(text="Offered by NACL - Shio", icon_url="https://raw.githubusercontent.com/Shio7/EZ-Bot/master/images/Shio8.png")
             await ctx.send(embed=embed)
 
         if not 0 < vol < 101:
-            return await ctx.send('볼륨은 1부터 100까지만 가능해요!')
+            return await ctx.send('Please enter a value between 1 and 100.')
 
         player = self.get_player(ctx)
 
@@ -368,18 +396,21 @@ class Music(commands.Cog):
             vc.source.volume = vol / 100
 
         player.volume = vol / 100
-        await ctx.send(f'**`{ctx.author}`**: 볼륨을 설정했어! **{vol}%**')
+        await ctx.send(f'**`{ctx.author}`**: Set the volume to **{vol}%**')
 
     @commands.command(name='stop')
     async def stop_(self, ctx):
-        
+        """Stop the currently playing song and destroy the player.
+        !Warning!
+            This will destroy the player assigned to your guild, also deleting any queued songs and settings.
+        """
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
-            return await ctx.send('채널에 접속해 있지 않아!!', delete_after=20)
+            return await ctx.send('I am not currently playing anything!', delete_after=20)
 
         await self.cleanup(ctx.guild)
 
 
-def setup(client):
-    client.add_cog(Music(client))
+def setup(bot):
+    bot.add_cog(ko_Music(bot))
