@@ -94,7 +94,7 @@ user = 444363545635848193
 
 @client.command()
 async def 때려(ctx, user_ : discord.Member):
-    if user_ == 오타쿠#5251:
+    if user_ == "오타쿠#5251":
         return
     else:
         await ctx.send(str(user_) + " 죽어 퍽퍽")
