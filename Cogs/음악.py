@@ -162,7 +162,7 @@ class MusicPlayer:
         return self.bot.loop.create_task(self._cog.cleanup(guild))
 
 
-class ko_Music(commands.Cog):
+class Music(commands.Cog):
     """Music related commands."""
 
     __slots__ = ('bot', 'players')
@@ -170,6 +170,7 @@ class ko_Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.players = {}
+        self.client = client
 
     async def cleanup(self, guild):
         try:
@@ -413,4 +414,4 @@ class ko_Music(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(ko_Music(bot))
+    bot.add_cog(Music(bot))
