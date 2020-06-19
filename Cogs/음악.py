@@ -170,7 +170,7 @@ class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.players = {}
-        self.client = client
+
 
     async def cleanup(self, guild):
         try:
