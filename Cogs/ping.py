@@ -20,18 +20,15 @@ class ping(commands.Cog):
 
     @commands.command()
     async def 봇정보(self, ctx):
-        embed=discord.Embed(title="봇 정보!", description = f"{int(self.client.latency *1000)}ms이야!")
-        await ctx.send(embed)
+        await ctx.send(discord.Embed(title="봇 정보!", description = f"{int(self.client.latency *1000)}ms이야!"))
 
     @commands.command()
     async def 핑(self, ctx):
-        embed=discord.Embed(title="핑!", description = f"{int(self.client.latency *1000)}ms이야!")
-        await ctx.send(embed)
+        await ctx.send(discord.Embed(title="핑!", description = f"{int(self.client.latency *1000)}ms이야!"))
 
     @commands.command()
     async def ping(self, ctx):
-        embed=discord.Embed(title="ping!", description = f"{int(self.client.latency *1000)}ms이야!")
-        await ctx.send(embed)
+        await ctx.send(discord.Embed(title="ping!", description = f"{int(self.client.latency *1000)}ms이야!"))
 
     
 
