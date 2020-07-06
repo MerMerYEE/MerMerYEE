@@ -40,13 +40,15 @@ class util(commands.Cog):
         await ctx.send(f"{hours}시간 {minitues}분 {seconds}초 동안 살아있었어!!")
 
     @commands.command()
-    async def 홀짝(ctx, h)
-        v = "홀", "짝"
-        g = random.choice(v)
-        if g == h
-            await ctx.send("정답입니다!")
+    async def 홀짝(ctx):
+        a = "홀", "짝"
+	c = random.choice(a)
+        if b == c:
+            print("정답입니다!!")
+	    c = random.choice(a)
         else:
-            await ctx.send("땡 틀렸습니다 ㅠㅠ")
+	    print("틀렸습니다!!")
+            c = random.choice(a)
 
 
 def setup(client): 
